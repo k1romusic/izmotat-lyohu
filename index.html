@@ -1337,7 +1337,7 @@ async function turn(){
   $('sectors').classList.add('picked');
   const badge = $('badge');
   badge.style.setProperty('--sec', COLORS[idx % COLORS.length]);
-  badge.innerHTML = `<small>СЕКТОР</small>${task.icon} ${task.short.toUpperCase()}`;
+  badge.textContent = `${task.icon} ${task.short.toUpperCase()}`;
   badge.classList.add('show');
   addTired(task, text);
   const pl = $('plaque'); pl.classList.remove('reveal'); void pl.offsetWidth; pl.classList.add('reveal');
