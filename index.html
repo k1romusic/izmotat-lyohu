@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Как измотать Лёху</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=PT+Sans:wght@400;700&family=Tektur:wght@600;800;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg1:#0b1640; --bg2:#1a0b3d; --gold:#ffd24a; --gold2:#c8932a;
@@ -19,14 +19,34 @@
     overflow-x:hidden;
   }
   header{text-align:center;padding:10px 16px 0}
-  h1{
-    font-family:"Russo One",sans-serif;font-weight:400;margin:0;
-    font-size:clamp(24px,min(5vw,6.2vh),54px);letter-spacing:2px;
-    background:linear-gradient(180deg,#fff6c9,#ffd24a 45%,#d98c14);
+  /* заголовок в стиле файтинга: металлическое золото, тёмная обводка, огненное свечение */
+  h1,.mk{
+    font-family:"Tektur","Russo One",sans-serif;font-weight:900;margin:0;text-transform:uppercase;
+    font-size:clamp(26px,min(5.4vw,6.6vh),60px);letter-spacing:3px;line-height:1.05;
+    background:linear-gradient(180deg,#fffbe8 0%,#ffe08a 20%,#f0a92c 44%,#7a3606 50%,#c96d12 56%,#ffc54a 78%,#fff3c4 100%);
     -webkit-background-clip:text;background-clip:text;color:transparent;
-    filter:drop-shadow(0 3px 0 #7a3d00) drop-shadow(0 0 18px rgba(255,200,60,.45));
+    -webkit-text-stroke:1.4px #2b1000;
+    filter:drop-shadow(0 2px 0 #4a1c00) drop-shadow(0 4px 0 #1c0800) drop-shadow(0 0 12px rgba(255,90,0,.7)) drop-shadow(0 0 28px rgba(255,40,0,.35));
+    animation:flame 2.6s ease-in-out infinite alternate;
   }
-  .sub{opacity:.8;font-size:clamp(12px,min(1.6vw,2vh),16px);margin-top:2px}
+  @keyframes flame{
+    from{filter:drop-shadow(0 2px 0 #4a1c00) drop-shadow(0 4px 0 #1c0800) drop-shadow(0 0 10px rgba(255,90,0,.6)) drop-shadow(0 0 24px rgba(255,40,0,.3))}
+    to{filter:drop-shadow(0 2px 0 #4a1c00) drop-shadow(0 4px 0 #1c0800) drop-shadow(0 0 16px rgba(255,120,0,.85)) drop-shadow(0 0 36px rgba(255,40,0,.45))}
+  }
+  .tagline{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:4px 18px;margin-top:4px}
+  .sub{font-family:"Tektur",sans-serif;font-weight:600;letter-spacing:3px;text-transform:uppercase;
+    font-size:clamp(11px,min(1.4vw,1.9vh),15px);color:#cfd8ff;opacity:.9}
+  .versus{font-family:"Tektur",sans-serif;font-weight:900;letter-spacing:2px;font-size:clamp(15px,min(2.2vw,3vh),26px);
+    display:flex;align-items:center;gap:10px;line-height:1}
+  .versus .p1{color:#5cc0ff;text-shadow:0 0 10px rgba(40,150,255,.8),0 2px 0 #062a55;-webkit-text-stroke:.6px #021a38}
+  .versus .p2{color:#ff4a3a;text-shadow:0 0 10px rgba(255,50,30,.8),0 2px 0 #4a0800;-webkit-text-stroke:.6px #2a0400}
+  .versus .vs{font-size:1.25em;font-style:italic;
+    background:linear-gradient(180deg,#fff6c9,#ffc528 45%,#ff5a00 55%,#ffd24a);-webkit-background-clip:text;background-clip:text;color:transparent;
+    -webkit-text-stroke:.8px #3a1200;filter:drop-shadow(0 0 8px rgba(255,120,0,.8))}
+  .rec{font-size:12.5px;margin-top:6px;opacity:.9}
+  .rec b{color:var(--gold)}
+  .modal .record{font-family:"Tektur",sans-serif;font-weight:800;font-size:18px;color:var(--gold);margin:8px 0}
+  .modal .record.new{font-size:22px;animation:pulse .9s ease-in-out infinite;text-shadow:0 0 14px rgba(255,200,40,.8)}
 
   /* ---------- сцена ---------- */
   .stage{
@@ -248,7 +268,7 @@
   .modal.show{opacity:1;pointer-events:auto}
   .modal-card{max-width:520px;width:100%;text-align:center;padding:26px 22px;border-radius:20px;background:linear-gradient(180deg,#0e2a78,#081a4d);border:4px solid var(--gold);box-shadow:0 0 60px rgba(255,210,74,.35);transform:scale(.8);transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
   .modal.show .modal-card{transform:scale(1)}
-  .modal .big{font-family:"Russo One",sans-serif;font-size:clamp(28px,5vw,44px);color:var(--gold)}
+  .modal .big{font-size:clamp(26px,5vw,42px)}
   .modal p{font-size:17px;margin:10px 0}
   .modal .call{margin:16px 0;padding:12px;border-radius:12px;background:#3a0d12;border:2px solid #ff4b3e;font-size:17px;opacity:0}
   .modal.show .call{animation:ringIn .5s ease-out 2.6s both, shake .5s ease-in-out 3.1s 3}
@@ -269,7 +289,8 @@
   @media (hover:none){.hint{display:none}}
   @media (max-width:820px){
     header{padding-top:12px}
-    .sub{font-size:12px;padding:0 8px}
+    .tagline{gap:2px 12px}
+    h1{font-size:clamp(19px,6.4vw,40px);letter-spacing:1.5px}
     .stage{grid-template-columns:1fr 1fr;grid-template-rows:auto;min-height:0;margin-top:4px;padding:0 6px}
     .stage::before,.stage::after{width:180px}
     .wheel-wrap{grid-column:1 / 3;grid-row:1}
@@ -301,8 +322,11 @@
 </head>
 <body>
 <header>
-  <h1>КАК ИЗМОТАТЬ ЛЁХУ</h1>
-  <div class="sub">Капитал-шоу службы связи · Сегодня играет электромонтёр связи 6-го разряда Лёха</div>
+  <h1>Как измотать Лёху</h1>
+  <div class="tagline">
+    <span class="sub">Капитал-шоу службы связи</span>
+    <span class="versus"><span class="p1">ЛЁХА</span><span class="vs">VS</span><span class="p2">САНЫЧ</span></span>
+  </div>
 </header>
 
 <main class="stage">
@@ -614,6 +638,7 @@
       <h3>УСТАЛОСТЬ ЛЁХИ</h3>
       <div class="meter"><i id="tiredBar"></i></div>
       <div class="meter-cap"><span id="tiredText">Бодр и свеж (подозрительно)</span><b id="tiredPct">0%</b></div>
+      <div class="rec">🏆 Рекорд: <b id="recBest">—</b> · Смен: <b id="recShifts">0</b> · Дольше всех: <b id="recWorst">—</b></div>
     </div>
     <div class="card">
       <h3>ЖУРНАЛ ЗАДАНИЙ</h3>
@@ -622,8 +647,9 @@
   </div>
 </section>
 <div class="modal" id="modal"><div class="modal-card">
-  <div class="big" id="mTitle"></div>
+  <div class="big mk" id="mTitle"></div>
   <p id="mText"></p>
+  <div class="record" id="mRecord"></div>
   <div class="call">📞 Входящий звонок: <span id="mFrom"></span><br><b id="mCall"></b></div>
   <p class="small" id="mEnd"></p>
   <button class="spin-btn" id="newShift">НОВАЯ СМЕНА</button>
@@ -1178,6 +1204,28 @@ function addTired(task, text){
   return inc;
 }
 
+/* ---------- рекорды: за сколько заданий Лёха выдохся (хранится в этом браузере) ---------- */
+const REC_KEY = 'lexa-records-v1';
+const plural = (n, a, b, c) => { const m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? a : m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20) ? b : c; };
+const tasksWord = n => `${n} ${plural(n, 'задание', 'задания', 'заданий')}`;
+let rec = { shifts: [], best: null, worst: null };
+try { rec = Object.assign(rec, JSON.parse(localStorage.getItem(REC_KEY)) || {}); } catch (e) {}
+function renderRec(){
+  $('recBest').textContent = rec.best ? tasksWord(rec.best) : '—';
+  $('recShifts').textContent = rec.shifts.length;
+  $('recWorst').textContent = rec.worst ? tasksWord(rec.worst) : '—';
+}
+function recordShift(n){ // возвращает true, если это новый рекорд (Лёху измотали быстрее, чем когда-либо)
+  const isNew = rec.best === null || n < rec.best;
+  rec.shifts = rec.shifts.concat(n).slice(-100);
+  if (isNew) rec.best = n;
+  if (rec.worst === null || n > rec.worst) rec.worst = n;
+  try { localStorage.setItem(REC_KEY, JSON.stringify(rec)); } catch (e) {}
+  renderRec();
+  return isNew;
+}
+let lastRecordNew = false;
+
 /* ---------- кнопка ---------- */
 const btn = $('spinBtn');
 function setBtn(text, enabled, superMode){
@@ -1293,6 +1341,7 @@ function confetti(){
 }
 async function burnout(){
   burned = true;
+  lastRecordNew = recordShift(count);
   setBtn('ЛЁХА НА ИСХОДЕ…', false);
   const last = pick(LEXA_DYING);
   say('lexa', last); await sleep(readTime(last));
@@ -1321,6 +1370,11 @@ async function superPrize(){
   $('mFrom').textContent = call.from;
   $('mCall').textContent = call.call;
   $('mEnd').textContent = call.end;
+  const mr = $('mRecord');
+  mr.className = 'record' + (lastRecordNew ? ' new' : '');
+  mr.textContent = lastRecordNew
+    ? `🏆 НОВЫЙ РЕКОРД! Лёха измотан за ${tasksWord(count)}!`
+    : `Рекорд — ${tasksWord(rec.best)}. Сейчас — ${tasksWord(count)}.`;
   $('modal').classList.add('show'); ring();
 }
 async function newShift(){
@@ -1353,6 +1407,7 @@ setInterval(() => {
   if (!busy && !burned && !$('bossBubble').classList.contains('show') && Math.random() < .4) say('boss', pick(BOSS_IDLE));
 }, 20000);
 applyLevel();
+renderRec();
 setTimeout(() => { if (!busy) say('boss', 'Добрый день! В студии служба связи. Крутите барабан!'); }, 600);
 </script>
 </body>
