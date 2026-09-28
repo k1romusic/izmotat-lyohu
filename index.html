@@ -1041,6 +1041,31 @@ const LEXA_LEAVE = ['Пошёл. Не ждите скоро.','Если что �
   'Вернусь — расскажу. Если вернусь.','Кофе беру с собой. Не трогать.','Ладно, пошёл. Но я всё записал.',
   'Если позвонит Петрович — меня нет.','Пошёл. Про премию не забудьте.','Саныч, я тебе это припомню.',
   'Всё, ушёл. Совещание без меня.','Пошёл творить чудеса за оклад.'];
+/* Перекличка Саныча и Лёхи, пока барабан никто не крутит */
+const BANTER = [
+  [['boss','Алексей, как настроение?'],['lexa','Как у ИБП после шестнадцати аккумуляторов.']],
+  [['boss','Нужно сесть обсудить…'],['lexa','Саныч, можно я сяду, а обсуждать будете без меня?']],
+  [['lexa','Саныч, а премия в этом квартале будет?'],['boss','Грустненько… Нужно сесть обсудить.']],
+  [['boss','Надо всем помогать, Алексей!'],['lexa','А мне кто поможет?'],['boss','Ой… кажется, я тупанул.']],
+  [['lexa','Саныч, «Газель» опять стучит.'],['boss','Это не стук, Алексей. Это характер.']],
+  [['boss','Алексей, а где Петрович?'],['lexa','Петрович всегда там, где нет работы.']],
+  [['lexa','Кофе закончился.'],['boss','Грустненько.'],['lexa','Вот и я говорю.']],
+  [['boss','Алексей, вы у нас лучший электромонтёр!'],['lexa','Я у вас единственный электромонтёр.']],
+  [['lexa','Саныч, я в отпуск хочу.'],['boss','Отпуск — это состояние души, Алексей.']],
+  [['boss','Алексей, почему рация шипит?'],['lexa','Это не рация. Это я.']],
+  [['boss','Скоро комиссия, Алексей.'],['lexa','Спрячусь в кладовке. Там меня никто не найдёт.']],
+  [['lexa','Саныч, а можно мне стажёра?'],['boss','Можно. Но стажироваться он будет у тебя.'],['lexa','То есть работы станет больше…']],
+  [['boss','Алексей, у нас всё под контролем?'],['lexa','У нас всё под изолентой.']],
+  [['boss','Алексей, вы завтракали?'],['lexa','Кофе считается?'],['boss','У нас всё считается. Кроме переработок.']],
+  [['lexa','Саныч, на барабане только моё имя.'],['boss','Это не баг, Алексей. Это фича.']],
+  [['boss','Мне тут сказали, что вы устали.'],['lexa','Кто сказал? Я молчу и работаю.']],
+  [['lexa','Саныч, а ты сам барабан крутить не пробовал?'],['boss','Я его кручу, Алексей. Руками других людей.']],
+  [['boss','Алексей, пятиминутка через пять минут.'],['lexa','А закончится через два часа. Знаю.']],
+  [['lexa','Саныч, у меня штаны порвались.'],['boss','Надо всем помогать… Напишите служебку.']],
+  [['boss','Алексей, я вам доверяю самое важное!'],['lexa','Опять принтер в бухгалтерии?'],['boss','…Да.']],
+];
+BANTER.push(...BOSS_IDLE.map(t => [['boss', t]])); // иногда Саныч говорит сам с собой
+const LEXA_HELLO = ['Опять смена… Здрасьте, Саныч.','Я на месте. К сожалению.','Доброе утро. Или какое оно там.'];
 const TIRED = [[0,'Бодр и свеж (подозрительно)'],[20,'Слегка помят'],[40,'Пьёт третью кружку кофе'],[60,'Спит с открытыми глазами'],[80,'Мечтает об отпуске'],[95,'Просит отгул. Не дают.'],[100,'Разряжен в ноль']];
 /* Реплики Лёхи под конкретный сектор (смешиваются с общими) */
 const LEXA_BY = {
@@ -1061,26 +1086,6 @@ const LEXA_BY = {
   'Камеры':['Голуби опять поработали…','Снимает небо — красиво же.','Пароль admin? Нет?'],
   'Юзеры':['Кнопочку включили?','Перезагрузить пробовали?','Я не айтишник! А, ладно…'],
   'Газель':['Газель — моя вторая жена.','Она опять не заводится? Какой сюрприз.','Изолента есть — Газель поедет.'],
-};
-/* Что Лёха говорит о прошлом задании, когда барабан крутится снова */
-const LEXA_DONE = {
-  'Кабель':['Кабель протянул. Мышь в лотке передаёт привет.','Протянул. Руки теперь тоже протянул.'],
-  'Мачта':['С мачты слез. Антенна больше не грустит. Грущу я.','Был наверху. Там хорошо. Там нет вас.'],
-  'АТС':['АТС перезагрузил. Сделал вид, что так и было.','Номер 100 теперь мой. Шучу. Или нет.'],
-  'Поиск':['Нашёл! Оно было у Петровича.','Нашёл. Не спрашивайте где.'],
-  'Выезд':['Съездил. Вилку в розетку воткнул. 300 км.','Вернулся. Бутерброды не вернулись.'],
-  'ИБП':['16 аккумуляторов… спина теперь тоже аккумулятор. Разряженный.','ИБП больше не пищит. Пищу я.'],
-  'Акты':['Акты подписал. Синей ручкой!','Бумаги сдал. Дерево где-то плачет.'],
-  'Маркировка':['Всё промаркировал. Себя тоже.','Бирки наклеил. Пальцы склеил.'],
-  'Рации':['Рации настроил. Такси теперь слушает нас.','Приём… приём… сделано.'],
-  'Принтер':['Принтер починил. Он меня теперь боится.','Бухгалтерия довольна. Я — нет.'],
-  'Инструктаж':['Инструктаж прошёл. Расписался 7 раз. Рука не прошла.','Теперь я знаю всё. И ничего.'],
-  'Дежурство':['Отдежурил. Спал ровно 0 минут.','После дежурства — сразу к вам. Счастье.'],
-  'Кросс':['Кросс прозвонил. Вася, кстати, трогал.','400 пар… я теперь сам пара. Пара нервов.'],
-  'Кладовка':['Кладовку разобрал. Нашёл модем и смысл жизни. Модем работает.','Ничего не выкинул. Как велели.'],
-  'Камеры':['Камеру повернул. Голуби повернули обратно.','Камеры работают. Табуретку унёс Петрович.'],
-  'Юзеры':['Кнопочку включил. Интернет «починил».','Пасьянс вернул. Директор счастлив.'],
-  'Газель':['Газель завёл. С толкача. Спина не завелась.','Газель поехала! Метров сто.'],
 };
 const bags = TASKS.map(() => []);
 function nextVariant(i){
@@ -1157,11 +1162,11 @@ function say(who, text, ms){
 /* ---------- Лёха: вид и походка зависят от усталости ---------- */
 const slot = $('lexaSlot'), lexa = $('lexa');
 const LEVELS = [ // с какого % усталости, время выхода на сцену, темп шага
-  {from:0,  walk:1.1, step:.26},
-  {from:20, walk:1.5, step:.34},
-  {from:40, walk:1.9, step:.42},
-  {from:60, walk:2.5, step:.55},
-  {from:80, walk:3.3, step:.66},
+  {from:0,  walk:1.0, step:.26},
+  {from:20, walk:1.2, step:.32},
+  {from:40, walk:1.5, step:.4},
+  {from:60, walk:1.9, step:.5},
+  {from:80, walk:2.4, step:.6},
 ];
 let lexaLine = '', level = 0;
 function applyLevel(){
@@ -1177,10 +1182,10 @@ function chooseLexaLine(task){
   if (level === 4 && r < .5) return pick(LEXA_WRECK);
   return r < .75 && LEXA_BY[task.short] ? pick(LEXA_BY[task.short]) : pick(LEXA);
 }
-function lexaOut(){
+function lexaOut(keepBubble){
   if (!slot.classList.contains('in')) return;
   slot.classList.remove('in','idle','jump'); slot.classList.add('out');
-  $('lexaBubble').classList.remove('show');
+  if (!keepBubble) $('lexaBubble').classList.remove('show');
 }
 async function lexaIn(){ // завершается, когда Лёха дошёл до места
   applyLevel();
@@ -1262,12 +1267,33 @@ function typeText(el, text){
   step();
 }
 
-/* Один ход — диалог идёт строго по очереди, каждая реплика висит, пока её можно прочитать:
-   крутим барабан (Лёха выходит и отчитывается о прошлом задании) → задание → Саныч комментирует →
-   Лёха огрызается → Лёха бурчит на ходу и уходит → можно крутить снова */
+/* ---------- перекличка в простое ---------- */
+let banterToken = 0, banterBag = [];
+function stopBanter(){
+  banterToken++;
+  ['boss','lexa'].forEach(w => { clearTimeout(timers[w]); $(w + 'Bubble').classList.remove('show'); });
+  $('boss').classList.remove('talking');
+}
+async function banterLoop(delay){
+  const my = ++banterToken;
+  await sleep(delay);
+  while (my === banterToken) {
+    if (!busy && !burned && slot.classList.contains('in')) {
+      if (!banterBag.length) banterBag = BANTER.map((_, k) => k).sort(() => Math.random() - .5);
+      for (const [who, text] of BANTER[banterBag.pop()]) {
+        if (my !== banterToken) return;
+        say(who, text); await sleep(readTime(text) + 300);
+      }
+    }
+    await sleep(6000 + Math.random()*6000);
+  }
+}
+
+/* Один ход: барабан → задание → Саныч комментирует → Лёха огрызается и уходит выполнять →
+   через пару секунд возвращается → можно крутить снова */
 async function turn(){
   if (busy || burned) return;
-  busy = true; audio();
+  busy = true; audio(); stopBanter();
   setBtn('БАРАБАН КРУТИТСЯ…', false);
   $('sectors').classList.remove('picked');
   document.querySelectorAll('#sectors .win').forEach(e => e.classList.remove('win'));
@@ -1276,18 +1302,11 @@ async function turn(){
   $('taskText').textContent = '• • •';
   $('wheelWrap').classList.add('spinning');
   $('boss').classList.add('pointing');
-
-  // Лёха выходит на сцену, пока крутится барабан; со второго хода — докладывает о прошлом задании
-  const report = prevTask ? pick(LEXA_DONE[prevTask.short] || LEXA) : '';
-  if (!report) say('boss', pick(BOSS_START));
-  const lexaReady = (async () => {
-    if (!slot.classList.contains('in')) await lexaIn();
-    if (report) { say('lexa', report); await sleep(readTime(report)); }
-  })();
+  say('boss', pick(BOSS_START));
+  if (!slot.classList.contains('in')) lexaIn();
 
   const idx = await spinWheel();
   const task = TASKS[idx], text = nextVariant(idx);
-  prevTask = task;
   $('wheelWrap').classList.remove('spinning');
   fanfare();
   document.querySelectorAll(`#sectors [data-i="${idx}"]`).forEach(e => e.classList.add('win'));
@@ -1296,32 +1315,31 @@ async function turn(){
   badge.style.setProperty('--sec', COLORS[idx % COLORS.length]);
   badge.innerHTML = `<small>СЕКТОР</small>${task.icon} ${task.short.toUpperCase()}`;
   badge.classList.add('show');
-  const inc = addTired(task, text);
+  addTired(task, text);
   const pl = $('plaque'); pl.classList.remove('reveal'); void pl.offsetWidth; pl.classList.add('reveal');
-  $('plaqueLabel').textContent = `ЗАДАНИЕ №${count} · +${inc}% УСТАЛОСТИ`;
+  $('plaqueLabel').textContent = `ЗАДАНИЕ №${count}`;
   typeText($('taskText'), text);
   $('lexaProp').textContent = task.icon;
   lexa.classList.add('has-prop');
-  setBtn('ИДЁТ РАЗГОВОР…', false);
+  setBtn('ЛЁХА НА ЗАДАНИИ…', false);
 
-  await lexaReady;
-  await sleep(500);
-  // 1. Саныч комментирует задание
   const pool = tired >= 60 && Math.random() < .35 ? BOSS_TIRED
              : Math.random() < .65 && BOSS_BY[task.short] ? BOSS_BY[task.short] : BOSS_RESULT;
-  const bossLine = pick(pool).replace('{s}', task.short);
-  say('boss', bossLine); await sleep(readTime(bossLine));
+  say('boss', pick(pool).replace('{s}', task.short));
+  await sleep(900);
   $('boss').classList.remove('pointing');
   if (tired >= 100) { applyLevel(); await burnout(); busy = false; return; }
-  // 2. Лёха огрызается
-  const answer = chooseLexaLine(task);
-  say('lexa', answer); await sleep(readTime(answer));
-  // 3. бурчит на ходу и уходит (вид меняется по усталости к следующему выходу)
-  const leave = pick(LEXA_LEAVE);
-  say('lexa', leave); await sleep(readTime(leave));
-  lexaOut(); await sleep(600);
+
+  // Лёха огрызается и уходит выполнять, договаривая на ходу
+  const answer = Math.random() < .3 ? pick(LEXA_LEAVE) : chooseLexaLine(task);
+  say('lexa', answer);
+  await sleep(1700);
+  lexaOut(true);
+  await sleep(1500);
+  await lexaIn(); // возвращается уже чуть более потрёпанным
   busy = false;
   setBtn('КРУТИТЬ БАРАБАН!', true);
+  banterLoop(3500);
 }
 
 /* ---------- 100%: Лёха разрядился → воскрес → суперприз → его выдёргивают обратно ---------- */
@@ -1340,7 +1358,7 @@ function confetti(){
   }
 }
 async function burnout(){
-  burned = true;
+  burned = true; stopBanter();
   lastRecordNew = recordShift(count);
   setBtn('ЛЁХА НА ИСХОДЕ…', false);
   const last = pick(LEXA_DYING);
@@ -1393,6 +1411,7 @@ async function newShift(){
   say('lexa', back); await sleep(readTime(back));
   busy = false;
   setBtn('КРУТИТЬ БАРАБАН!', true);
+  banterLoop(5000);
 }
 
 function onButton(){ burned ? superPrize() : turn(); }
@@ -1402,13 +1421,17 @@ document.addEventListener('keydown', e => {
   if ($('modal').classList.contains('show')) return;
   if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) { e.preventDefault(); if (!btn.disabled) onButton(); }
 });
-// начальник иногда что-нибудь говорит сам по себе
-setInterval(() => {
-  if (!busy && !burned && !$('bossBubble').classList.contains('show') && Math.random() < .4) say('boss', pick(BOSS_IDLE));
-}, 20000);
 applyLevel();
 renderRec();
-setTimeout(() => { if (!busy) say('boss', 'Добрый день! В студии служба связи. Крутите барабан!'); }, 600);
+setTimeout(async () => {
+  if (busy) return;
+  say('boss', 'Добрый день! В студии служба связи. Крутите барабан!');
+  await lexaIn();
+  if (busy) return;
+  await sleep(1200);
+  if (!busy) say('lexa', pick(LEXA_HELLO));
+  banterLoop(7000);
+}, 600);
 </script>
 </body>
 </html>
