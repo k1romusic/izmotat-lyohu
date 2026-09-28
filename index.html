@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Как измотать Лёху</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#0b1640; --bg2:#1a0b3d; --gold:#ffd24a; --gold2:#c8932a;
+    --blue:#0a7fd6; --text:#fff; --panel:rgba(8,14,40,.78);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%}
+  body{
+    font-family:"PT Sans",system-ui,sans-serif;color:var(--text);
+    background:radial-gradient(ellipse at 50% 0%,#2b3ea8 0%,var(--bg1) 45%,var(--bg2) 100%) fixed;
+    overflow-x:hidden;
+  }
+  header{text-align:center;padding:18px 16px 0}
+  h1{
+    font-family:"Russo One",sans-serif;font-weight:400;margin:0;
+    font-size:clamp(28px,5vw,56px);letter-spacing:2px;
+    background:linear-gradient(180deg,#fff6c9,#ffd24a 45%,#d98c14);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 3px 0 #7a3d00) drop-shadow(0 0 18px rgba(255,200,60,.45));
+  }
+  .sub{opacity:.8;font-size:clamp(13px,1.6vw,16px);margin-top:4px}
+
+  /* ---------- сцена ---------- */
+  .stage{
+    position:relative;max-width:1240px;margin:10px auto 0;padding:0 16px;
+    display:grid;grid-template-columns:1fr 1.35fr 1fr;align-items:end;gap:8px;
+    min-height:520px;
+  }
+  .stage::before,.stage::after{ /* прожекторы */
+    content:"";position:absolute;top:-80px;width:320px;height:760px;pointer-events:none;
+    background:linear-gradient(180deg,rgba(255,255,220,.22),rgba(255,255,220,0) 80%);
+    clip-path:polygon(45% 0,55% 0,100% 100%,0 100%);
+    animation:sway 7s ease-in-out infinite alternate;z-index:0;
+  }
+  .stage::before{left:6%;transform-origin:50% 0;transform:rotate(-14deg)}
+  .stage::after{right:6%;transform-origin:50% 0;transform:rotate(14deg);animation-delay:-3.5s}
+  @keyframes sway{from{rotate:-6deg}to{rotate:6deg}}
+  .floor{
+    position:absolute;left:0;right:0;bottom:-30px;height:110px;z-index:0;
+    background:radial-gradient(ellipse at 50% 30%,rgba(90,120,255,.45),rgba(20,20,60,0) 70%);
+  }
+  .slot{position:relative;z-index:1;display:flex;justify-content:center;align-items:flex-end;min-height:420px}
+  .slot svg.person{width:100%;max-width:250px;height:auto;overflow:visible}
+
+  /* ---------- пузыри ---------- */
+  .bubble{
+    position:absolute;top:0;left:50%;transform:translate(-50%,-10px) scale(.6);opacity:0;
+    background:#fff;color:#14203a;border-radius:16px;padding:10px 14px;font-weight:700;
+    font-size:15px;line-height:1.25;width:max-content;max-width:230px;text-align:center;
+    box-shadow:0 6px 20px rgba(0,0,0,.35);transition:.25s cubic-bezier(.3,1.6,.5,1);z-index:5;
+  }
+  .bubble::after{content:"";position:absolute;bottom:-9px;left:50%;margin-left:-9px;border:9px solid transparent;border-bottom:0;border-top-color:#fff}
+  .bubble.show{opacity:1;transform:translate(-50%,-10px) scale(1)}
+
+  /* ---------- барабан ---------- */
+  .wheel-wrap{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+  #wheel{width:100%;max-width:470px;height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.55))}
+  .bulb{fill:#ffe9a0;animation:bulb 1.2s infinite}
+  .bulb.odd{animation-delay:-.6s}
+  .spinning .bulb{animation-duration:.22s}
+  @keyframes bulb{0%,49%{fill:#fff6c8;filter:drop-shadow(0 0 4px #ffd24a)}50%,100%{fill:#8a6a1c;filter:none}}
+  #pointer{transform-origin:0 -196px;transform-box:view-box}
+  #pointer.flick{animation:flick .12s ease-out}
+  @keyframes flick{0%{transform:rotate(0)}40%{transform:rotate(-16deg)}100%{transform:rotate(0)}}
+
+  .wheel-box{position:relative;width:100%;max-width:470px}
+  #sectors path{transition:opacity .35s, filter .35s}
+  #sectors.picked path{opacity:.35;filter:saturate(.4)}
+  #sectors.picked path.win{opacity:1;filter:none;animation:winGlow .7s ease-in-out infinite alternate}
+  #sectors.picked g.lab{opacity:.35}
+  #sectors.picked g.lab.win{opacity:1}
+  @keyframes winGlow{from{stroke:#fff;stroke-width:3}to{stroke:#fff6a8;stroke-width:9}}
+  .badge{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none;
+    font-family:"Russo One",sans-serif;font-size:clamp(20px,3.4vw,34px);color:#fff;white-space:nowrap;
+    padding:10px 22px;border-radius:16px;border:4px solid var(--gold);background:var(--sec,#0e2a78);
+    text-shadow:0 2px 0 rgba(0,0,0,.35);box-shadow:0 10px 30px rgba(0,0,0,.55),0 0 30px rgba(255,210,74,.5);
+    transition:transform .45s cubic-bezier(.3,1.7,.5,1),opacity .2s;z-index:3;
+  }
+  .badge.show{transform:translate(-50%,-50%) scale(1);opacity:1}
+  .badge small{display:block;font-size:.42em;letter-spacing:2px;color:#ffe9a0;text-align:center}
+  .spin-btn{
+    margin-top:14px;font-family:"Russo One",sans-serif;font-size:clamp(18px,2.4vw,26px);
+    color:#3a1c00;background:linear-gradient(180deg,#fff2a8,#ffc928 50%,#e39a0c);
+    border:0;border-radius:60px;padding:14px 38px;cursor:pointer;letter-spacing:1px;
+    box-shadow:0 6px 0 #8a4d00,0 10px 26px rgba(255,190,40,.45);transition:transform .08s,box-shadow .08s;
+  }
+  .spin-btn:hover{filter:brightness(1.06)}
+  .spin-btn:active{transform:translateY(4px);box-shadow:0 2px 0 #8a4d00,0 6px 16px rgba(255,190,40,.4)}
+  .spin-btn:disabled{filter:grayscale(.6) brightness(.8);cursor:wait}
+  .hint{font-size:12px;opacity:.6;margin-top:8px}
+
+  /* ---------- табло с заданием ---------- */
+  .board{
+    max-width:900px;margin:26px auto 0;padding:0 16px;position:relative;z-index:2;
+  }
+  .plaque{
+    background:linear-gradient(180deg,#0e2a78,#081a4d);border:4px solid var(--gold);
+    border-radius:18px;padding:18px 22px;text-align:center;min-height:118px;
+    box-shadow:0 0 0 4px #5a3a06,0 0 40px rgba(255,210,74,.25),inset 0 0 30px rgba(0,0,0,.5);
+  }
+  .plaque .label{font-family:"Russo One",sans-serif;color:var(--gold);letter-spacing:2px;font-size:14px}
+  .plaque .task{font-size:clamp(18px,2.6vw,26px);font-weight:700;margin-top:8px;min-height:1.3em}
+  .plaque.reveal{animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
+  @keyframes pop{0%{transform:scale(.85)}100%{transform:scale(1)}}
+
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+  .card{background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px 16px}
+  .card h3{margin:0 0 10px;font-family:"Russo One",sans-serif;font-weight:400;font-size:15px;color:var(--gold);letter-spacing:1px}
+  .meter{height:18px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden}
+  .meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3ad16a,#ffd24a 55%,#ff4b3e);transition:width .8s}
+  .meter-cap{display:flex;justify-content:space-between;font-size:13px;margin-top:6px;opacity:.85}
+  ol.log{margin:0;padding-left:20px;max-height:150px;overflow:auto;font-size:14px;line-height:1.45}
+  ol.log li{opacity:.9}
+  ol.log:empty::before{content:"Пока пусто — Лёха отдыхает.";opacity:.55;margin-left:-20px}
+  footer{text-align:center;font-size:12px;opacity:.45;padding:24px 16px}
+
+  /* ---------- подписи под героями (как в ТВ) ---------- */
+  .chyron{
+    position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);z-index:4;text-align:center;
+    font-family:"Russo One",sans-serif;font-size:clamp(11px,1.15vw,14px);letter-spacing:1px;line-height:1.2;
+    padding:6px 14px;border-radius:8px;background:linear-gradient(180deg,#0a7fd6,#064f8f);
+    border:2px solid var(--gold);box-shadow:0 6px 16px rgba(0,0,0,.45);width:max-content;max-width:100%;
+  }
+  .chyron small{display:block;font-family:"PT Sans",sans-serif;font-size:.8em;letter-spacing:0;opacity:.85}
+  #lexaSlot .chyron{opacity:0;transition:opacity .4s}
+  #lexaSlot.idle:not(.out) .chyron{opacity:1}
+
+  /* ---------- начальник ---------- */
+  #boss .arm-point{transform-origin:152px 152px;transition:transform .45s cubic-bezier(.3,1.4,.5,1)}
+  #boss.pointing .arm-point{transform:rotate(-78deg)}
+  #boss .body{animation:breathe 3.6s ease-in-out infinite;transform-origin:110px 458px}
+  #boss .mouth{transform-origin:110px 114px;transform-box:view-box}
+  #boss.talking .mouth{animation:talk .16s infinite alternate}
+  @keyframes talk{from{transform:scaleY(.4)}to{transform:scaleY(1.3)}}
+  #boss .head{transform-origin:110px 130px;animation:bossHead 7s ease-in-out infinite}
+  @keyframes bossHead{0%,100%{transform:rotate(0)}40%{transform:rotate(-2deg)}70%{transform:rotate(1.5deg)}}
+  @keyframes breathe{0%,100%{transform:scale(1,1)}50%{transform:scale(1.004,1.01)}}
+
+  /* ---------- Лёха ---------- */
+  #lexaSlot{--walk:1.5s;--step:.36s}
+  #lexaSlot .person{visibility:hidden}
+  #lexaSlot.in .person{visibility:visible;animation:walkIn var(--walk) cubic-bezier(.25,.6,.4,1) both}
+  #lexaSlot.in.limp .person{animation-name:walkInLimp;animation-timing-function:linear}
+  #lexaSlot.in.jump .person{animation:jumpOut 1.9s ease-in both}
+  #lexaSlot.out .person{visibility:visible;animation:walkOut .55s ease-in both}
+  @keyframes walkIn{from{transform:translateX(130%)}to{transform:translateX(0)}}
+  @keyframes walkInLimp{0%{transform:translateX(130%)}40%{transform:translateX(60%)}62%{transform:translateX(60%)}100%{transform:translateX(0)}}
+  @keyframes walkOut{from{transform:translateX(0);opacity:1}to{transform:translateX(130%);opacity:0}}
+  @keyframes jumpOut{0%{transform:translate(0,0)}12%{transform:translate(0,-70px)}24%{transform:translate(0,0)}36%{transform:translate(0,-50px)}48%{transform:translate(0,0)}100%{transform:translate(160%,0)}}
+  #lexa .leg-l{transform-origin:106px 272px}
+  #lexa .leg-r{transform-origin:136px 272px}
+  #lexa .walker{transform-origin:120px 395px}
+  #lexaSlot.in:not(.idle) .leg-l{animation:step var(--step) ease-in-out infinite alternate}
+  #lexaSlot.in:not(.idle) .leg-r{animation:step var(--step) ease-in-out infinite alternate-reverse}
+  #lexaSlot.in:not(.idle) .walker{animation:bob calc(var(--step) / 2) ease-in-out infinite alternate}
+  #lexaSlot.limp.in:not(.idle) .leg-r{animation-name:stepLimp}
+  #lexaSlot.limp.in:not(.idle) .walker{animation:limpBob var(--step) ease-in-out infinite}
+  @keyframes step{from{transform:rotate(-13deg)}to{transform:rotate(13deg)}}
+  @keyframes stepLimp{from{transform:rotate(-3deg)}to{transform:rotate(5deg)}}
+  @keyframes bob{from{transform:translateY(0)}to{transform:translateY(-5px)}}
+  @keyframes limpBob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(7px) rotate(3deg)}}
+
+  /* внешний вид по усталости: элементы .lv1–.lv4 появляются на уровнях l1–l4 */
+  #lexa .lv1,#lexa .lv2,#lexa .lv3,#lexa .lv4,#lexa .shades,#lexa .battery{display:none}
+  #lexa.l1 .lv1,#lexa.l2 .lv2,#lexa.l3 .lv3,#lexa.l4 .lv4{display:inline}
+  #lexa.l1 .fresh{display:none}
+  #lexa.vacation .shades{display:inline}
+  #lexaSlot.collapsed #lexa .battery{display:inline}
+  #lexa{--lean:0deg}
+  #lexa.l1{--lean:-3deg} #lexa.l2{--lean:-5deg} #lexa.l3{--lean:-7deg} #lexa.l4{--lean:-10deg}
+
+  #lexa .upper{transform-origin:120px 272px;transform:rotate(var(--lean))}
+  #lexaSlot.idle .upper{animation:perky 1.4s ease-in-out infinite}
+  #lexaSlot.idle #lexa.l1 .upper{animation:slouch 4.5s ease-in-out infinite}
+  @keyframes perky{0%,100%{transform:rotate(0) translateY(0)}50%{transform:rotate(1deg) translateY(-3px)}}
+  @keyframes slouch{0%,100%{transform:rotate(var(--lean)) scaleY(1)}50%{transform:rotate(calc(var(--lean) - 1.5deg)) scaleY(.985)}}
+  #lexa .head{transform-origin:120px 150px}
+  #lexaSlot.idle #lexa.l2 .head{animation:nod 5s ease-in-out infinite}
+  #lexaSlot.idle #lexa.l4 .head{animation:nodDeep 3.6s ease-in-out infinite}
+  @keyframes nod{0%,30%{transform:rotate(3deg)}58%{transform:rotate(17deg) translateY(4px)}61%{transform:rotate(-4deg)}68%,100%{transform:rotate(3deg)}}
+  @keyframes nodDeep{0%,20%{transform:rotate(6deg)}55%{transform:rotate(26deg) translateY(8px)}58%{transform:rotate(-6deg)}66%,100%{transform:rotate(6deg)}}
+  #lexa .lid{transform-origin:center;transform-box:fill-box;transform:scaleY(.4)}
+  #lexa.l1 .lid{transform:scaleY(.8)} #lexa.l2 .lid{transform:scaleY(1)} #lexa.l3 .lid{transform:scaleY(1.2)}
+  #lexaSlot.idle #lexa.l2 .lid{animation:lids 5s ease-in-out infinite}
+  @keyframes lids{0%,30%{transform:scaleY(1)}56%{transform:scaleY(1.9)}61%,100%{transform:scaleY(.8)}}
+  #lexa .helmet{transform-origin:120px 92px;transform:rotate(-2deg)}
+  #lexa.l2 .helmet{transform:rotate(-8deg)}
+  #lexa.l4 .helmet{transform:rotate(-15deg) translate(-2px,3px)}
+  #lexa.vacation .helmet{transform:rotate(0)}
+  #lexa .sweat{opacity:0}
+  #lexaSlot.idle .sweat{animation:sweat 2.4s ease-in infinite}
+  #lexaSlot.idle .sweat.s2{animation-delay:1.2s}
+  @keyframes sweat{0%{opacity:0;transform:translateY(0)}15%{opacity:1}100%{opacity:0;transform:translateY(34px)}}
+  #lexa .zzz text{opacity:0;font-family:"Russo One",sans-serif;fill:#cfe3ff}
+  #lexaSlot.idle .zzz text{animation:zzz 3s ease-out infinite}
+  #lexaSlot.idle .zzz text:nth-child(2){animation-delay:1s}
+  #lexaSlot.idle .zzz text:nth-child(3){animation-delay:2s}
+  @keyframes zzz{0%{opacity:0;transform:translate(0,0) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translate(26px,-50px) scale(1.3)}}
+  #lexa .steam path{opacity:0}
+  #lexaSlot.idle .steam path{animation:steam 2.6s ease-out infinite}
+  #lexaSlot.idle .steam path:nth-child(2){animation-delay:1.3s}
+  @keyframes steam{0%{opacity:0;transform:translateY(0)}30%{opacity:.8}100%{opacity:0;transform:translateY(-18px)}}
+  #lexa .arm-mug{transform-origin:170px 168px}
+  #lexaSlot.idle .arm-mug{animation:sip 5s ease-in-out infinite}
+  @keyframes sip{0%,70%,100%{transform:rotate(0)}80%,88%{transform:rotate(-8deg)}}
+  #lexa .prop{opacity:0}
+  #lexa.has-prop .prop{opacity:1}
+  #lexa.has-prop .pliers{opacity:0}
+  #lexaSlot.idle .prop{animation:propShake 2.2s ease-in-out infinite;transform-origin:70px 318px;transform-box:view-box}
+  @keyframes propShake{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+  #lexa .mouth-yawn{opacity:0}
+  #lexaSlot.idle .mouth-yawn{animation:yawn 9s ease-in-out infinite 1.5s}
+  #lexaSlot.idle .mouth-sad{animation:yawnHide 9s ease-in-out infinite 1.5s}
+  @keyframes yawn{0%,8%{opacity:0}12%,24%{opacity:1}28%,100%{opacity:0}}
+  @keyframes yawnHide{0%,8%{opacity:1}12%,24%{opacity:0}28%,100%{opacity:1}}
+  #lexaSlot.in #lexa .sole{transform-origin:156px 392px;animation:flap .45s ease-in-out infinite alternate}
+  @keyframes flap{from{transform:rotate(0)}to{transform:rotate(10deg)}}
+  #lexa .fly-orbit{transform-origin:120px 100px;animation:orbit 2.4s linear infinite}
+  #lexa .wing{animation:wing .06s linear infinite alternate}
+  @keyframes orbit{to{transform:rotate(360deg)}}
+  @keyframes wing{to{opacity:.2}}
+
+  /* 100%: Лёха падает и «разряжается» */
+  #lexa .collapse{transform-origin:150px 395px;transition:transform .9s cubic-bezier(.5,-.3,.7,1.2)}
+  #lexaSlot.collapsed #lexa .collapse{transform:translate(0,-72px) rotate(-90deg) scale(.8)}
+  #lexaSlot.collapsed .head{animation:none!important}
+  #lexa .battery .lvl{animation:blink .7s steps(2) infinite}
+  @keyframes blink{50%{opacity:0}}
+  #lexaSlot.collapsed .chyron{opacity:0!important}
+
+  .spin-btn.super{background:linear-gradient(180deg,#b8f7c8,#35d06a 50%,#12954a);color:#063a1a;box-shadow:0 6px 0 #0a5a2b,0 10px 26px rgba(60,220,120,.5);animation:pulse 1s ease-in-out infinite}
+  @keyframes pulse{50%{transform:scale(1.06)}}
+
+  /* финальное окно */
+  .modal{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(3,6,20,.72);opacity:0;pointer-events:none;transition:opacity .4s}
+  .modal.show{opacity:1;pointer-events:auto}
+  .modal-card{max-width:520px;width:100%;text-align:center;padding:26px 22px;border-radius:20px;background:linear-gradient(180deg,#0e2a78,#081a4d);border:4px solid var(--gold);box-shadow:0 0 60px rgba(255,210,74,.35);transform:scale(.8);transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+  .modal.show .modal-card{transform:scale(1)}
+  .modal .big{font-family:"Russo One",sans-serif;font-size:clamp(28px,5vw,44px);color:var(--gold)}
+  .modal p{font-size:17px;margin:10px 0}
+  .modal .call{margin:16px 0;padding:12px;border-radius:12px;background:#3a0d12;border:2px solid #ff4b3e;font-size:17px;opacity:0}
+  .modal.show .call{animation:ringIn .5s ease-out 2.2s both, shake .5s ease-in-out 2.7s 3}
+  .modal .small{opacity:0;font-size:14px}
+  .modal.show .small{animation:ringIn .5s ease-out 3.4s both}
+  .modal .spin-btn{opacity:0}
+  .modal.show .spin-btn{animation:ringIn .5s ease-out 3.8s both}
+  @keyframes ringIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes shake{25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
+  .confetti{position:fixed;top:-20px;width:10px;height:16px;z-index:60;pointer-events:none;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}
+  }
+  /* ---------- телефоны и планшеты: персонажи стоят по углам барабана ---------- */
+  .spin-btn{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  @media (hover:none){.hint{display:none}}
+  @media (max-width:820px){
+    header{padding-top:12px}
+    .sub{font-size:12px;padding:0 8px}
+    .stage{grid-template-columns:1fr 1fr;grid-template-rows:auto;min-height:0;margin-top:4px;padding:0 6px}
+    .stage::before,.stage::after{width:180px}
+    .wheel-wrap{grid-column:1 / 3;grid-row:1}
+    .wheel-box{max-width:min(92vw,470px)}
+    #bossSlot{grid-column:1;grid-row:1;justify-self:start}
+    #lexaSlot{grid-column:2;grid-row:1;justify-self:end}
+    .slot{min-height:0;align-self:end;margin-bottom:var(--under-wheel,96px);z-index:3;width:clamp(96px,27vw,200px);pointer-events:none}
+    .slot svg.person{max-width:100%}
+    .bubble{font-size:12px;max-width:150px;padding:7px 10px;border-radius:12px;transform:translate(-50%,-6px) scale(.6)}
+    .bubble.show{transform:translate(-50%,-6px) scale(1)}
+    #bossSlot .bubble,#bossSlot .bubble.show{left:0;transform-origin:30% 100%}
+    #lexaSlot .bubble,#lexaSlot .bubble.show{left:auto;right:0;transform-origin:70% 100%}
+    #bossSlot .bubble{transform:translate(0,-6px) scale(.6)} #bossSlot .bubble.show{transform:translate(0,-6px) scale(1)}
+    #lexaSlot .bubble{transform:translate(0,-6px) scale(.6)} #lexaSlot .bubble.show{transform:translate(0,-6px) scale(1)}
+    #bossSlot .bubble::after{left:30%} #lexaSlot .bubble::after{left:70%}
+    .chyron{font-size:9px;padding:3px 6px;border-radius:6px;letter-spacing:0;bottom:-4px}
+    .chyron small{font-size:8px}
+    .spin-btn{margin-top:10px;padding:12px 30px}
+    .board{margin-top:14px;padding:0 10px}
+    .plaque{padding:12px 14px;min-height:0}
+    .plaque .label{font-size:12px}
+    .stats{grid-template-columns:1fr;gap:10px;margin-top:10px}
+    .modal p,.modal .call{font-size:15px}
+  }
+  @media (max-width:820px) and (hover:none){.slot{--under-wheel:72px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>КАК ИЗМОТАТЬ ЛЁХУ</h1>
+  <div class="sub">Капитал-шоу службы связи · Сегодня играет электромонтёр связи 6-го разряда Лёха</div>
+</header>
+
+<main class="stage">
+  <div class="floor"></div>
+
+  <!-- ===== Начальник службы связи ===== -->
+  <div class="slot" id="bossSlot">
+    <div class="bubble" id="bossBubble"></div>
+    <div class="chyron">НАЧАЛЬНИК СЛУЖБЫ СВЯЗИ</div>
+    <svg id="boss" class="person" viewBox="0 0 220 470" aria-label="Начальник службы связи">
+      <ellipse cx="110" cy="458" rx="72" ry="10" fill="rgba(0,0,0,.4)"/>
+      <g class="body">
+        <!-- ноги -->
+        <path d="M83 296 L79 446 L107 446 L110 304 Z" fill="#1d3f7a"/>
+        <path d="M110 304 L113 446 L141 446 L137 296 Z" fill="#1d3f7a"/>
+        <path d="M94 310 L93 444 M126 310 L127 444" stroke="#17336a" stroke-width="2"/>
+        <path d="M70 444 h38 v12 h-42 q-1 -9 4 -12z" fill="#111"/>
+        <path d="M112 444 h38 q5 3 4 12 h-42z" fill="#111"/>
+        <!-- пиджак -->
+        <path d="M64 158 Q62 144 86 138 L134 138 Q158 144 156 158 L152 310 L68 310 Z" fill="#2352a3"/>
+        <path d="M97 138 L110 188 L123 138 Z" fill="#fff"/>
+        <path d="M105 141 h10 l-2 7 h-6z" fill="#0b2f6b"/>
+        <path d="M107 147 L113 147 L117 196 L110 207 L103 196 Z" fill="#0b2f6b"/>
+        <path d="M106 158 L114 164 M105 174 L116 182 M104 190 L116 198" stroke="#3f6fc4" stroke-width="1.6"/>
+        <path d="M97 138 L110 188 L99 218 L84 152 Z" fill="#1a3f82"/>
+        <path d="M123 138 L110 188 L121 218 L136 152 Z" fill="#1a3f82"/>
+        <path d="M110 218 L110 310" stroke="#1a3f82" stroke-width="2"/>
+        <circle cx="113" cy="236" r="3" fill="#10275a"/><circle cx="113" cy="262" r="3" fill="#10275a"/>
+        <path d="M128 176 h18" stroke="#1a3f82" stroke-width="2"/>
+        <path d="M130 176 l3 -7 l3 5 l3 -6 l3 5 l3 -4 v7z" fill="#fff"/>
+        <circle cx="92" cy="165" r="3.2" fill="#0a7fd6" stroke="#fff" stroke-width="1"/>
+        <!-- левая рука с микрофоном -->
+        <g class="mic">
+          <polyline points="72,156 55,232 84,202" fill="none" stroke="#2352a3" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+          <g transform="rotate(-38 86 194)">
+            <rect x="81" y="152" width="9" height="46" rx="4" fill="#1b1b1b"/>
+            <rect x="79" y="158" width="13" height="5" rx="2" fill="#555"/>
+          </g>
+          <circle cx="100" cy="153" r="10" fill="#9aa3ad"/>
+          <path d="M92 148 h16 M91 153 h18 M92 158 h16" stroke="#6d7680" stroke-width="1.4"/>
+          <rect x="74" y="203" width="10" height="6" rx="2" fill="#fff" transform="rotate(-40 79 206)"/>
+          <circle cx="84" cy="198" r="10" fill="#eec39a"/>
+        </g>
+        <!-- бейдж на ленте -->
+        <path d="M101 142 L103 222 M119 142 L117 222" stroke="#0a7fd6" stroke-width="2.4"/>
+        <rect x="80" y="220" width="60" height="38" rx="4" fill="#fff" stroke="#0a7fd6" stroke-width="1.6"/>
+        <rect x="80" y="220" width="60" height="9" rx="3" fill="#0a7fd6"/>
+        <text x="110" y="227" font-size="5.5" text-anchor="middle" fill="#fff" font-weight="700">ПРОПУСК</text>
+        <text x="110" y="239" font-size="7" text-anchor="middle" fill="#0b2f6b" font-weight="700">НАЧАЛЬНИК</text>
+        <text x="110" y="248" font-size="6.2" text-anchor="middle" fill="#0b2f6b" font-weight="700">СЛУЖБЫ</text>
+        <text x="110" y="256" font-size="6.2" text-anchor="middle" fill="#0b2f6b" font-weight="700">СВЯЗИ</text>
+        <!-- правая рука (указывает на барабан) -->
+        <g class="arm-point">
+          <polyline points="152,152 170,212 176,266" fill="none" stroke="#2352a3" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="169" y="266" width="15" height="6" rx="2" fill="#fff"/>
+          <circle cx="177" cy="278" r="10" fill="#eec39a"/>
+          <rect x="173" y="282" width="6" height="16" rx="3" fill="#eec39a"/>
+        </g>
+        <!-- голова -->
+        <g class="head">
+          <rect x="100" y="116" width="20" height="24" fill="#dcae84"/>
+          <ellipse cx="83" cy="94" rx="7" ry="11" fill="#e6b88e"/>
+          <ellipse cx="137" cy="94" rx="7" ry="11" fill="#e6b88e"/>
+          <ellipse cx="110" cy="90" rx="27" ry="34" fill="#eec39a"/>
+          <!-- седые зачёсанные назад волосы -->
+          <path d="M84 84 Q80 56 108 53 Q138 52 137 82 Q134 66 124 63 Q112 60 100 63 Q88 67 84 84Z" fill="#e4e4e4"/>
+          <path d="M92 66 Q108 58 128 64 M94 72 Q110 64 130 70" stroke="#c4c4c4" stroke-width="1.5" fill="none"/>
+          <path d="M84 84 q-3 10 0 16 M136 84 q3 10 0 16" stroke="#d6d6d6" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <!-- морщины на лбу -->
+          <path d="M96 74 q14 -4 28 0 M98 79 q12 -3 24 0" stroke="#d29f76" stroke-width="1.2" fill="none"/>
+          <!-- брови и прищур -->
+          <path d="M93 86 q7 -4 13 -1 M114 85 q7 -3 13 1" stroke="#bdbdbd" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M94 93 q6 -5 12 0" stroke="#2d2d2d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <path d="M114 93 q6 -5 12 0" stroke="#2d2d2d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <circle cx="100" cy="92" r="1.6" fill="#3a6ea8"/><circle cx="120" cy="92" r="1.6" fill="#3a6ea8"/>
+          <!-- усталость: мешки и «гусиные лапки» -->
+          <path d="M94 98 q6 3 12 0 M114 98 q6 3 12 0" stroke="#c99a8c" stroke-width="1.5" fill="none"/>
+          <path d="M89 91 l-4 -2 M89 94 l-5 0 M131 91 l4 -2 M131 94 l5 0" stroke="#d29f76" stroke-width="1.1"/>
+          <path d="M110 92 q-4 10 -1 14 q3 2 5 -1" stroke="#c98f64" stroke-width="2" fill="none"/>
+          <path d="M96 106 q-3 5 -1 10 M124 106 q3 5 1 10" stroke="#d29f76" stroke-width="1.2" fill="none"/>
+          <!-- широкая улыбка -->
+          <g class="mouth">
+            <path d="M97 112 q13 13 26 0 q-13 4 -26 0z" fill="#7a1f1f"/>
+            <path d="M99 112.6 q11 3.2 22 0 v2.6 q-11 3 -22 0z" fill="#fff"/>
+          </g>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ===== Барабан ===== -->
+  <div class="wheel-wrap" id="wheelWrap">
+    <div class="wheel-box">
+    <div class="badge" id="badge"></div>
+    <svg id="wheel" viewBox="-215 -222 430 437" aria-label="Барабан">
+      <defs>
+        <radialGradient id="rim" cx="50%" cy="40%" r="60%">
+          <stop offset="0" stop-color="#ffe98a"/><stop offset=".7" stop-color="#d9a12a"/><stop offset="1" stop-color="#7d4d06"/>
+        </radialGradient>
+        <radialGradient id="hub" cx="40%" cy="35%" r="70%">
+          <stop offset="0" stop-color="#3aa4f0"/><stop offset="1" stop-color="#063e7a"/>
+        </radialGradient>
+        <radialGradient id="gloss" cx="50%" cy="20%" r="70%">
+          <stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle r="208" fill="url(#rim)"/>
+      <circle r="192" fill="#3a2303"/>
+      <g id="bulbs"></g>
+      <g id="rotor">
+        <g id="sectors"></g>
+        <circle r="46" fill="url(#hub)" stroke="#ffd24a" stroke-width="5"/>
+        <text y="-4" text-anchor="middle" font-family="Russo One,sans-serif" font-size="15" fill="#fff">СЛУЖБА</text>
+        <text y="14" text-anchor="middle" font-family="Russo One,sans-serif" font-size="15" fill="#fff">СВЯЗИ</text>
+      </g>
+      <circle r="186" fill="url(#gloss)" pointer-events="none"/>
+      <g id="pointer">
+        <path d="M-17 -218 L17 -218 L0 -170 Z" fill="#e5252a" stroke="#ffd24a" stroke-width="4" stroke-linejoin="round"/>
+        <circle cy="-208" r="5" fill="#ffd24a"/>
+      </g>
+    </svg>
+    </div>
+    <button class="spin-btn" id="spinBtn">КРУТИТЬ БАРАБАН!</button>
+    <div class="hint">или нажмите пробел</div>
+  </div>
+
+  <!-- ===== Лёха ===== -->
+  <div class="slot" id="lexaSlot">
+    <div class="bubble" id="lexaBubble"></div>
+    <svg id="lexa" class="person" viewBox="0 0 240 420" aria-label="Электромонтёр Лёха">
+      <ellipse cx="122" cy="404" rx="74" ry="10" fill="rgba(0,0,0,.4)"/>
+      <g class="collapse"><g class="walker">
+        <!-- ноги -->
+        <g class="leg-l">
+          <path d="M94 270 L92 386 L118 386 L120 270 Z" fill="#173b73"/>
+          <rect x="92" y="336" width="27" height="8" fill="#d6dde6"/>
+          <rect x="92" y="338.5" width="27" height="3" fill="#f5f7fa"/>
+          <ellipse class="lv2" cx="104" cy="358" rx="9" ry="5" fill="#6b5a3e" opacity=".6"/>
+          <path class="lv3" d="M97 298 l5 -5 l4 5 l5 -5 l4 6 l-1 8 l-6 4 l-6 -2 l-5 -5z" fill="#eab98e" stroke="#0e2850" stroke-width="1.5"/>
+          <g class="lv4">
+            <path d="M92 360 l4 7 l4 -6 l5 8 l5 -7 l4 7 l4 -6 v24 h-26z" fill="#eab98e"/>
+            <path d="M92 360 l4 7 l4 -6 l5 8 l5 -7 l4 7 l4 -6" fill="none" stroke="#0e2850" stroke-width="1.5"/>
+            <g fill="#0e2850"><circle cx="98" cy="322" r="1.8"/><circle cx="103" cy="319" r="1.8"/><circle cx="108" cy="318" r="1.8"/><circle cx="113" cy="320" r="1.8"/><circle cx="99" cy="330" r="1.8"/><circle cx="104" cy="332" r="1.8"/><circle cx="109" cy="332" r="1.8"/><circle cx="114" cy="329" r="1.8"/></g>
+          </g>
+          <path d="M84 384 q0 -10 12 -10 h24 v18 h-38 q-4 0 2 -8z" fill="#1a1a1a"/>
+        </g>
+        <g class="leg-r">
+          <path d="M122 270 L124 386 L150 386 L148 270 Z" fill="#173b73"/>
+          <rect x="123" y="336" width="27" height="8" fill="#d6dde6"/>
+          <rect x="123" y="338.5" width="27" height="3" fill="#f5f7fa"/>
+          <ellipse class="lv2" cx="138" cy="300" rx="7" ry="4" fill="#6b5a3e" opacity=".55"/>
+          <g class="lv3" transform="rotate(8 136 305)">
+            <rect x="128" y="298" width="17" height="15" fill="#2f86d8"/>
+            <rect x="129.5" y="299.5" width="14" height="12" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="2 2"/>
+          </g>
+          <path d="M120 384 q0 -10 12 -10 h24 v18 h-38 q-4 0 2 -8z" fill="#1a1a1a"/>
+          <path class="lv4 sole" d="M117 391 h39 v4 h-37 q-3 0 -2 -4z" fill="#555"/>
+        </g>
+
+        <g class="upper">
+          <!-- левая рука: плоскогубцы или предмет сектора -->
+          <g>
+            <polyline points="80,162 66,226 70,284" fill="none" stroke="#2166b3" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M58 250 l23 2 l-1 9 l-23 -2z" fill="#d6dde6"/>
+            <path class="lv3" d="M57 222 l4 -3 l3 4 l4 -4 l3 4 l4 -2 l-1 8 l-4 4 l-6 -2 l-6 1z" fill="#eab98e" stroke="#123a6b" stroke-width="1.2"/>
+            <circle cx="70" cy="292" r="10" fill="#eab98e"/>
+            <g class="lv4">
+              <rect x="60" y="285" width="20" height="5" rx="1" fill="#fff" transform="rotate(-12 70 287)"/>
+              <rect x="60" y="292" width="20" height="5" rx="1" fill="#eee" transform="rotate(10 70 294)"/>
+              <circle cx="74" cy="289" r="1.6" fill="#d33"/>
+            </g>
+            <g class="pliers">
+              <path d="M66 298 l-8 34 M72 298 l4 34" stroke="#c8202a" stroke-width="5" stroke-linecap="round"/>
+              <path d="M58 330 l-3 14 M76 330 l2 14" stroke="#8f99a3" stroke-width="4" stroke-linecap="round"/>
+            </g>
+            <text class="prop" id="lexaProp" x="70" y="332" font-size="38" text-anchor="middle"></text>
+          </g>
+          <!-- спецовка -->
+          <path d="M78 164 Q76 150 98 146 L144 146 Q166 150 164 164 L156 280 L86 280 Z" fill="#2166b3"/>
+          <path d="M104 146 L120 168 L136 146 Z" fill="#153f73"/>
+          <path d="M120 168 L120 278" stroke="#153f73" stroke-width="2.5"/>
+          <rect x="84" y="222" width="76" height="9" fill="#d6dde6"/>
+          <rect x="84" y="225" width="76" height="3" fill="#f5f7fa"/>
+          <rect x="85" y="240" width="74" height="9" fill="#d6dde6"/>
+          <rect x="85" y="243" width="74" height="3" fill="#f5f7fa"/>
+          <rect x="84" y="262" width="74" height="16" fill="#1a4f94"/>
+          <rect x="112" y="264" width="16" height="12" rx="2" fill="#bfbfbf"/>
+          <rect x="126" y="176" width="30" height="16" rx="3" fill="#fff"/>
+          <text x="141" y="183" font-size="5.6" text-anchor="middle" fill="#0a7fd6" font-weight="700">ГАЗПРОМ</text>
+          <text x="141" y="189.5" font-size="4" text-anchor="middle" fill="#0a7fd6">ТРАНСГАЗ МСК</text>
+          <rect x="88" y="178" width="22" height="8" rx="2" fill="#153f73"/>
+          <text x="99" y="184" font-size="5" text-anchor="middle" fill="#fff">ЛЁХА</text>
+          <!-- грязь, заплатки, дыры -->
+          <g class="lv2" fill="#6b5a3e" opacity=".5"><ellipse cx="100" cy="258" rx="8" ry="4"/><ellipse cx="148" cy="208" rx="6" ry="4"/></g>
+          <g class="lv3" transform="rotate(-6 144 256)">
+            <rect x="136" y="250" width="16" height="13" fill="#3a8ee0"/>
+            <rect x="137.5" y="251.5" width="13" height="10" fill="none" stroke="#fff" stroke-dasharray="2 2"/>
+          </g>
+          <g class="lv4">
+            <path d="M104 200 l5 -6 l3 4 l5 -3 l2 6 l5 2 l-3 5 l3 5 l-6 1 l-3 4 l-5 -3 l-5 1 l1 -6 l-4 -4z" fill="#1b1b1b"/>
+            <path d="M144 204 q8 -4 10 4 q2 8 -6 8 q-8 2 -7 -5z" fill="#6b3f1d" opacity=".75"/>
+          </g>
+          <!-- бухта кабеля -->
+          <g fill="none" stroke="#f08a1c" stroke-width="4">
+            <ellipse cx="92" cy="180" rx="20" ry="30" transform="rotate(-24 92 180)"/>
+            <ellipse cx="94" cy="182" rx="15" ry="25" transform="rotate(-24 94 182)" stroke="#d9700c"/>
+            <ellipse cx="90" cy="178" rx="24" ry="34" transform="rotate(-24 90 178)" stroke="#ff9f3a" stroke-width="3"/>
+            <path class="lv4" d="M70 160 q20 10 5 25 q-15 15 20 20 q25 5 5 25" stroke="#ff9f3a" stroke-width="3"/>
+          </g>
+          <!-- правая рука: кружка кофе -->
+          <g class="arm-mug">
+            <polyline points="160,162 178,220 158,236" fill="none" stroke="#2166b3" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M166 206 l22 -4 l2 9 l-22 4z" fill="#d6dde6"/>
+            <rect x="140" y="222" width="22" height="24" rx="3" fill="#f4f4f4" stroke="#cfcfcf"/>
+            <ellipse cx="151" cy="223" rx="10" ry="2.4" fill="#4a2a12"/>
+            <path d="M162 227 q9 0 9 8 q0 7 -9 7" fill="none" stroke="#f4f4f4" stroke-width="4"/>
+            <text x="151" y="238" font-size="6" text-anchor="middle" fill="#6b3f1d" font-weight="700">КОФЕ</text>
+            <circle cx="154" cy="238" r="9" fill="#eab98e"/>
+            <g class="steam" stroke="#e8eef8" stroke-width="2" fill="none" stroke-linecap="round">
+              <path d="M146 216 q-4 -5 0 -10 q4 -5 0 -10"/>
+              <path d="M154 216 q-4 -5 0 -10 q4 -5 0 -10"/>
+            </g>
+          </g>
+
+          <!-- голова -->
+          <g class="head">
+            <rect x="110" y="128" width="20" height="22" fill="#d9a67c"/>
+            <ellipse cx="91" cy="112" rx="6" ry="9" fill="#e3b187"/>
+            <ellipse cx="149" cy="112" rx="6" ry="9" fill="#e3b187"/>
+            <ellipse cx="120" cy="110" rx="29" ry="33" fill="#eab98e"/>
+            <path class="lv1" d="M94 118 Q98 144 120 145 Q142 144 146 118 Q140 136 120 137 Q100 136 94 118Z" fill="#8a6a55" opacity=".22"/>
+            <g class="lv3">
+              <path d="M93 114 Q97 146 120 147 Q143 146 147 114 Q141 138 120 139 Q99 138 93 114Z" fill="#6b4f3d" opacity=".3"/>
+              <g fill="#6b4f3d" opacity=".6"><circle cx="104" cy="130" r=".9"/><circle cx="110" cy="134" r=".9"/><circle cx="118" cy="136" r=".9"/><circle cx="126" cy="135" r=".9"/><circle cx="133" cy="132" r=".9"/><circle cx="138" cy="127" r=".9"/><circle cx="100" cy="125" r=".9"/><circle cx="114" cy="139" r=".9"/><circle cx="130" cy="138" r=".9"/></g>
+            </g>
+            <path d="M92 90 l6 10 l2 -12 l6 9 l3 -10" fill="#4a3526"/>
+            <path class="lv3" d="M146 88 l6 8 l-1 -10 l5 6" fill="#4a3526"/>
+            <!-- глаза -->
+            <ellipse cx="108" cy="108" rx="7" ry="5" fill="#fff"/>
+            <ellipse cx="132" cy="108" rx="7" ry="5" fill="#fff"/>
+            <circle cx="108" cy="109" r="3" fill="#2d2d2d"/>
+            <circle cx="132" cy="109" r="3" fill="#2d2d2d"/>
+            <path class="lid" d="M100 108 a8 7 0 0 1 16 0 z" fill="#dcaa80"/>
+            <path class="lid" d="M124 108 a8 7 0 0 1 16 0 z" fill="#dcaa80"/>
+            <path class="lv1" d="M101 115 q7 5 14 0 M125 115 q7 5 14 0" stroke="#9c6c8f" stroke-width="1.6" fill="none" opacity=".6"/>
+            <path class="lv3" d="M100 117 q8 6 16 0 M124 117 q8 6 16 0 M101 121 q7 4 14 0 M125 121 q7 4 14 0" stroke="#7d4f76" stroke-width="2" fill="none" opacity=".7"/>
+            <ellipse class="lv4" cx="108" cy="116" rx="9" ry="6" fill="#7b4fa0" opacity=".4"/>
+            <path class="fresh" d="M101 97 q7 -5 14 -1 M125 96 q7 -4 14 1" stroke="#4a3526" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path class="lv1" d="M100 99 l14 3 M140 99 l-14 3" stroke="#4a3526" stroke-width="3" stroke-linecap="round"/>
+            <path d="M120 110 q-3 8 1 10" stroke="#c48a60" stroke-width="2" fill="none"/>
+            <path class="fresh" d="M110 126 q10 9 20 0 z" fill="#fff" stroke="#7a3a2a" stroke-width="2.4" stroke-linejoin="round"/>
+            <path class="lv1 mouth-sad" d="M111 130 q9 -5 18 0" stroke="#7a3a2a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+            <ellipse class="lv2 mouth-yawn" cx="120" cy="130" rx="6" ry="8" fill="#5a1a1a"/>
+            <g class="lv3" transform="rotate(-20 140 124)">
+              <rect x="132" y="121" width="16" height="6" rx="2" fill="#f0d2a8" stroke="#cfa77a" stroke-width=".8"/>
+              <rect x="137" y="116" width="6" height="16" rx="2" fill="#f0d2a8" stroke="#cfa77a" stroke-width=".8"/>
+            </g>
+            <path class="sweat lv1" d="M147 96 q4 6 0 9 q-4 -3 0 -9z" fill="#8fd0ff"/>
+            <path class="sweat s2 lv1" d="M95 100 q4 6 0 9 q-4 -3 0 -9z" fill="#8fd0ff"/>
+            <g class="shades">
+              <ellipse cx="108" cy="108" rx="10" ry="7" fill="#111"/>
+              <ellipse cx="132" cy="108" rx="10" ry="7" fill="#111"/>
+              <path d="M118 107 h4" stroke="#111" stroke-width="3"/>
+              <path d="M102 105 l5 -2 M126 105 l5 -2" stroke="#fff" opacity=".6" stroke-width="2"/>
+            </g>
+            <!-- каска -->
+            <g class="helmet">
+              <path d="M86 94 Q84 56 120 54 Q156 56 154 94 Z" fill="#f7f7f7"/>
+              <path d="M118 55 h4 v39 h-4z" fill="#e2e2e2"/>
+              <rect x="80" y="91" width="80" height="7" rx="3.5" fill="#e6e6e6"/>
+              <rect x="88" y="80" width="64" height="6" fill="#0a7fd6"/>
+              <path d="M127 66 q5 5 1 10 q-1 3 -4 1 q2 -1 1 -3 q-2 2 -3 0 q0 -4 5 -8z" fill="#0a7fd6"/>
+              <g class="lv3" fill="#6b5a3e" opacity=".5"><ellipse cx="100" cy="72" rx="6" ry="3"/><ellipse cx="142" cy="84" rx="4" ry="2"/></g>
+              <path class="lv4" d="M104 58 l5 8 l-4 5 l7 6 l-3 6" stroke="#444" stroke-width="1.8" fill="none"/>
+            </g>
+            <g class="zzz lv2" font-weight="700">
+              <text x="156" y="72" font-size="16">z</text>
+              <text x="164" y="60" font-size="20">z</text>
+              <text x="172" y="46" font-size="24">Z</text>
+            </g>
+            <g class="lv4 fly-orbit"><g transform="translate(160 96)">
+              <ellipse class="wing" cx="-2" cy="-3" rx="3.4" ry="2" fill="#cfe8ff"/>
+              <ellipse class="wing" cx="2" cy="-3" rx="3.4" ry="2" fill="#cfe8ff"/>
+              <ellipse rx="3.2" ry="2.4" fill="#111"/>
+            </g></g>
+          </g>
+        </g>
+      </g></g>
+      <!-- 100%: батарейка -->
+      <g class="battery" transform="translate(58 240)">
+        <rect width="54" height="26" rx="4" fill="#111" stroke="#fff" stroke-width="3"/>
+        <rect x="54" y="8" width="6" height="10" rx="2" fill="#fff"/>
+        <rect class="lvl" x="4" y="4" width="8" height="18" rx="2" fill="#ff3b30"/>
+        <text x="27" y="46" text-anchor="middle" font-size="15" fill="#ff6b60" font-family="Russo One,sans-serif">0%</text>
+      </g>
+    </svg>
+    <div class="chyron">ЛЁХА<small>электромонтёр связи 6 разряда</small></div>
+  </div>
+</main>
+
+<section class="board">
+  <div class="plaque" id="plaque">
+    <div class="label" id="plaqueLabel">ЗАДАНИЕ ДЛЯ АЛЕКСЕЯ</div>
+    <div class="task" id="taskText">Крутите барабан, чтобы выдать задание!</div>
+  </div>
+  <div class="stats">
+    <div class="card">
+      <h3>УСТАЛОСТЬ ЛЁХИ</h3>
+      <div class="meter"><i id="tiredBar"></i></div>
+      <div class="meter-cap"><span id="tiredText">Бодр и свеж (подозрительно)</span><b id="tiredPct">0%</b></div>
+    </div>
+    <div class="card">
+      <h3>ЖУРНАЛ ЗАДАНИЙ</h3>
+      <ol class="log" id="log"></ol>
+    </div>
+  </div>
+</section>
+<div class="modal" id="modal"><div class="modal-card">
+  <div class="big">🏖️ ОТПУСК!</div>
+  <p>Лёха выполнил <b id="mCount">0</b> заданий и ушёл в отпуск на 14 дней.</p>
+  <div class="call">📞 Входящий звонок с ГРС:<br><b>«Алло! У нас телефон не звонит!»</b></div>
+  <p class="small">Отпуск Лёхи переносится на следующий квартал. Спасибо за понимание.</p>
+  <button class="spin-btn" id="newShift">НОВАЯ СМЕНА</button>
+</div></div>
+<footer>Шуточная игра. Все совпадения с реальными электромонтёрами случайны. Лёху берегите.</footer>
+
+<script>
+/* Секторы барабана. v — варианты заданий: при выпадении сектора берётся случайный,
+   и пока не выпадут все варианты сектора, повторов не будет. */
+const TASKS = [
+  {icon:'🔌', short:'Кабель', v:[
+    'Протянуть 300 метров кабеля до компрессорной станции. До обеда.',
+    'Проложить кабель через лоток, в котором уже лежит 40 кабелей и одна дохлая мышь.',
+    'Найти обрыв кабеля на трассе длиной 12 км. Трассоискатель в ремонте с 2019 года.',
+    'Затянуть кабель в трубу. Протяжку кто-то «взял на время».',
+    'Переложить кабель, который проложили вчера. Проект поменяли.',
+    'Смонтировать муфту в колодце. В колодце вода. И лягушки.',
+    'Размотать барабан кабеля на 1000 м. Вдвоём. Второй на больничном.',
+    'Протянуть оптику в соседний корпус «по-быстрому, там метров двадцать». Там двести.',
+    'Замерить сопротивление изоляции всех линий. Мегаомметр вернётся с поверки в пятницу.',
+    'Убрать кабельные бухты из коридора, пока не приехала проверка.',
+  ]},
+  {icon:'📡', short:'Мачта', v:[
+    'Залезть на мачту связи и посмотреть, почему «антенна грустная».',
+    'Поменять лампу заградительного огня на 60 метрах. Ветер 15 м/с.',
+    'Проверить крепление антенн после урагана. Мачта на месте — уже хорошо.',
+    'Снять гнездо с антенны. Птицы подали встречную жалобу.',
+    'Переюстировать антенну РРЛ, потому что «сигнал какой-то не такой».',
+    'Покрасить мачту. Кисточку выдадут, краску ищите сами.',
+    'Сфотографировать всё оборудование на мачте для отчёта. Сверху. С подписями.',
+    'Проверить молниезащиту мачты. Очень вовремя: гроза через час.',
+    'Подняться на мачту с комиссией. Комиссия остаётся внизу и даёт указания.',
+    'Снять с мачты старую антенну. Весит как холодильник, списана в 2004-м.',
+  ]},
+  {icon:'☎️', short:'АТС', v:[
+    'Перезагрузить АТС и сделать вид, что так и было задумано.',
+    'Перенастроить внутренние номера. Все хотят номер 100.',
+    'Выяснить, почему у директора в трубке играет радио.',
+    'Подключить новый телефон заместителю. Обязательно с красивой кнопкой.',
+    'Восстановить базу АТС из бэкапа. Последний бэкап делал ты, в 2017-м.',
+    'Настроить переадресацию так, чтобы звонки из головного офиса «сами терялись».',
+    'Выгрузить детализацию звонков за год. К утру.',
+    'Разобраться, кто звонил в Магадан по служебному.',
+    'Записать новое голосовое приветствие. Голос нужен бодрый.',
+    'Настроить конференц-связь на 40 участников. У половины телефоны из 90-х.',
+  ]},
+  {icon:'🔍', short:'Поиск', v:[
+    'Найти, куда делся синий патч-корд из серверной. Все знают, что это ты.',
+    'Найти ключ от шкафа связи. Последним его видел Петрович, в 2020-м.',
+    'Найти, какой кабель в кроссе идёт в бухгалтерию. Схемы нет, есть легенды.',
+    'Найти инвентарный номер коммутатора, который нигде не числится, но работает.',
+    'Найти причину помех на линии. Подозревают сварку в соседнем цехе.',
+    'Найти документацию на оборудование 1987 года выпуска.',
+    'Найти, куда уходит весь интернет на площадке. Подсказка: сосед смотрит сериалы.',
+    'Найти второй ключ от серверной. И первый тоже найти.',
+    'Найти стремянку. АХО забрало её «на пять минут» неделю назад.',
+    'Найти, кто выдернул вилку в серверной, чтобы зарядить телефон.',
+  ]},
+  {icon:'🚙', short:'Выезд', v:[
+    'Съездить на ГРС за 150 км: там «телефон не звонит». Телефон выключен из розетки.',
+    'Съездить на КС проверить связь. Машина будет, водитель в отпуске.',
+    'Выехать к крановому узлу на трассе. Дорога есть на карте, но не в жизни.',
+    'Сгонять в соседний филиал за одним разъёмом. Туда и обратно 400 км.',
+    'Съездить на объект с комиссией. Бутерброды за свой счёт.',
+    'Выехать на аварию в 3 часа ночи. Авария: погасла лампочка на модеме.',
+    'Съездить на склад за оборудованием. Кладовщица на обеде до 15:00.',
+    'Отвезти документы в Москву лично. Почте не доверяют.',
+    'Объехать 8 ГРС за день и снять показания. Бензина хватит на пять.',
+    'Выехать на объект по бездорожью. «Нива» уже в пути. Ну, почти.',
+  ]},
+  {icon:'🔋', short:'ИБП', v:[
+    'Заменить аккумуляторы в ИБП. Каждый весит 30 кг, их 16.',
+    'Выяснить, почему ИБП пищит третий день. Все привыкли, мешает только тебе.',
+    'Провести тест разряда ИБП. Во время совещания у директора.',
+    'Утилизировать старые аккумуляторы. Бумаги — в трёх экземплярах.',
+    'Перенести ИБП из подвала на третий этаж. Лифт не работает.',
+    'Замерить напряжение на всех банках и записать в журнал от руки.',
+    'Отказать бухгалтерии в подключении чайника к ИБП. Выжить.',
+    'Проверить дизель-генератор. Он не заводился с прошлой зимы.',
+    'Разобраться, почему свет моргает только в серверной.',
+    'Протереть пыль в ИБП. Пыль там с момента установки.',
+  ]},
+  {icon:'📝', short:'Акты', v:[
+    'Подписать 12 актов, 3 журнала и объяснительную за вчерашнюю объяснительную.',
+    'Составить акт списания мыши. Компьютерной. Она была одна.',
+    'Составить акт выполненных работ за квартал. Работы делал, но какие — не помнишь.',
+    'Переделать акт: подписан «не той ручкой». Нужна синяя.',
+    'Собрать под актом подписи пяти начальников. Трое в отпуске, один на объекте.',
+    'Составить акт об отказе оборудования. Оборудование работает, но акт уже заказали.',
+    'Заполнить акт осмотра кабельной трассы. Трассу осматривать не надо, заполнить надо.',
+    'Составить акт на списание кабеля. Кабель на месте, а в 1С его уже нет.',
+    'Составить акт приёма-передачи ключа от серверной. Самому себе.',
+    'Найти акт 2018 года, от которого зависит судьба всей службы.',
+  ]},
+  {icon:'🏷️', short:'Маркировка', v:[
+    'Промаркировать все кабели в стойке. Да, все. Да, вручную.',
+    'Перемаркировать всё по новому стандарту. Старый ввели в прошлом месяце.',
+    'Наклеить бирки на все розетки в здании. Принтер этикеток в ремонте.',
+    'Составить схему маркировки, которая совпадает с реальностью.',
+    'Подписать все порты коммутатора. Все 48. На 12 коммутаторах.',
+    'Заменить выцветшие бирки на кабелях. Выцвели все.',
+    'Перемаркировать кроссировку, которую кто-то подписал карандашом.',
+    'Нанести инвентарные номера на всё оборудование. На мачте тоже.',
+    'Промаркировать кабели в колодце. В колодце вода, бирки не клеятся.',
+    'Выяснить, куда идёт кабель с биркой «НЕ ТРОГАТЬ!!!». Никто не знает.',
+  ]},
+  {icon:'📻', short:'Рации', v:[
+    'Настроить радиостанции для линейщиков. Каждому — отдельно и с объяснением.',
+    'Выяснить, почему в рации слышно такси.',
+    'Зарядить 30 раций к утру. Зарядок шесть.',
+    'Объяснить линейщику, что по рации нельзя позвонить маме.',
+    'Достать рацию, которую уронили в траншею.',
+    'Перепрошить все рации. Программатор работает только на ноутбуке с Windows XP.',
+    'Проверить связь на всех каналах. «Приём, приём» — 200 раз.',
+    'Поставить на рации антенны от другой модели. «Надо подобрать».',
+    'Настроить ретранслятор на холме. Холм в 40 км.',
+    'Отучить водителя говорить в рацию «алло».',
+  ]},
+  {icon:'🖨️', short:'Принтер', v:[
+    'Починить принтер в бухгалтерии. «Ты же связист, ты разбираешься».',
+    'Заправить картридж. Тонер закончился ещё в прошлом году.',
+    'Вытащить из принтера скрепку, степлер и чью-то зарплатную ведомость.',
+    'Подключить принтер к сети. Принтеру 20 лет, сетевой платы у него нет.',
+    'Объяснить, почему принтер печатает иероглифы.',
+    'Поставить драйвер принтера на все 30 компьютеров отдела кадров.',
+    'Разобраться, почему принтер печатает, только когда рядом стоит Лёха.',
+    'Перенести МФУ весом 60 кг в кабинет на пятом этаже.',
+    'Отсканировать архив за 10 лет. Сканер медленный, архив большой.',
+    'Найти, кто отправил на печать PDF на 500 страниц. Все молчат.',
+  ]},
+  {icon:'🧯', short:'Инструктаж', v:[
+    'Пройти инструктаж по охране труда. Снова. И расписаться 7 раз.',
+    'Сдать экзамен по электробезопасности. Билеты поменяли вчера вечером.',
+    'Провести инструктаж новичку. Новичок уже всё знает из YouTube.',
+    'Прослушать лекцию о вреде работы на высоте. Потом на высоту.',
+    'Пройти медкомиссию. Врач принимает с 8:00 до 8:15.',
+    'Сдать нормативы по пожарной безопасности. Огнетушитель 1999 года.',
+    'Переписать инструкцию от руки, «чтобы лучше запомнилось».',
+    'Участвовать в учебной тревоге. Тревога в пятницу в 17:55.',
+    'Пройти обучение в СДО: 40 часов видео, перемотка отключена.',
+    'Собрать всю бригаду на инструктаж. Бригада в поле.',
+  ]},
+  {icon:'🌙', short:'Дежурство', v:[
+    'Ночное дежурство на узле связи. Потом — сразу на планёрку.',
+    'Дежурство в новогоднюю ночь. Оливье принесёт начальник. Может быть.',
+    'Подменить коллегу на дежурстве. Коллега подменял тебя в 2021-м.',
+    'Дежурить на выходных. Телефон на громкий, мечты на беззвучный.',
+    'Дежурить во время проверки. Выглядеть бодро.',
+    'Двое суток на связи. Отвечать на звонки даже во сне.',
+    'Дежурство в праздники. Зато тихо. Обычно.',
+    'Отдежурить за себя и за того парня. Тот парень на Мальдивах.',
+    'Ночное дежурство. Отчёт о нём сдать до конца дежурства.',
+    'Дежурить, пока на КС идёт ремонт. Ремонт на три недели.',
+  ]},
+  {icon:'📶', short:'Кросс', v:[
+    'Прозвонить все пары в кроссе. Их 400. Тестер сел.',
+    'Разобрать «лапшу» в кроссе. Лапша с 2005 года.',
+    'Переключить 50 абонентов на новый кросс без перерыва связи.',
+    'Найти в кроссе свободную пару. Её там нет.',
+    'Заменить плинты в кроссе. Плинты новые, винты старые.',
+    'Восстановить журнал кроссировки. Предыдущий съела мышь.',
+    'Выяснить, почему в кабинете 214 слышно кабинет 215.',
+    'Перекроссировать всё после ночных «доработок» подрядчика.',
+    'Разобраться с биркой в кроссе «Вася, не трожь».',
+    'Перевесить кросс на соседнюю стену. «Так красивее».',
+  ]},
+  {icon:'📦', short:'Кладовка', v:[
+    'Разобрать кладовку со старыми модемами 1998 года. Выкидывать ничего нельзя.',
+    'Провести инвентаризацию склада связи. Числится 200 телефонов, найдено 3.',
+    'Найти в кладовке запасной блок питания. Он там точно есть. Наверное.',
+    'Освободить кладовку под архив бухгалтерии. Куда деть всё — «придумаешь».',
+    'Разложить кабели по длинам. У всех длина «примерно метра три».',
+    'Составить опись барахла. Слово «барахло» в описи не использовать.',
+    'Вынести на свалку старый шкаф. Потом занести обратно: «ещё пригодится».',
+    'Подготовить списание старой техники. Техника уже списана, отчётности нет.',
+    'Найти коробку с надписью «Разное». Таких коробок 14.',
+    'Разобрать «подарки» подрядчиков: 40 бухт неизвестного кабеля.',
+  ]},
+  {icon:'📹', short:'Камеры', v:[
+    'Выяснить, почему камера на проходной снимает только небо.',
+    'Установить камеру над въездом. Лестница короче, чем нужно.',
+    'Восстановить запись за прошлую пятницу. Регистратор перезаписал её в субботу.',
+    'Протереть объективы всех 60 камер. Некоторые на мачтах.',
+    'Подключить охране второй монитор. Не для футбола. Официально.',
+    'Найти на записи, кто унёс табуретку из курилки.',
+    'Настроить камерам ночной режим. Ночью.',
+    'Перенастроить камеру, которую повернули голуби.',
+    'Заменить видеорегистратор. Пароль администратора никто не знает.',
+    'Вывести все камеры начальнику на телефон. На кнопочный.',
+  ]},
+  {icon:'💻', short:'Юзеры', v:[
+    'Помочь коллеге, у которого «сломался интернет». Wi-Fi выключен кнопкой.',
+    'Переустановить Windows начальнику отдела, сохранив все 3000 ярлыков.',
+    'Объяснить, что Caps Lock — это не поломка.',
+    'Настроить почту на телефоне главбуха. Телефон — подарок внука, инструкция на китайском.',
+    'Восстановить файл «Отчёт_финал_2_точно_финал.docx».',
+    'Подключить проектор к ноутбуку за 30 секунд до совещания.',
+    'Разобраться, почему «компьютер сам всё удалил».',
+    'Настроить видеосвязь. Камера заклеена жвачкой «от шпионов».',
+    'Вытащить флешку из сетевого разъёма.',
+    'Вернуть на компьютер директора пасьянс «Паук». Срочно.',
+  ]},
+  {icon:'🚐', short:'Газель', v:[
+    'Поменять масло в «Газели». Старое ушло само, вместе с прокладкой.',
+    'Завести «Газель» в минус 30. Толкать тоже тебе.',
+    'Найти, что стучит в «Газели». Стучит всё.',
+    'Поменять стартер на «Газели». Прямо на трассе, под дождём.',
+    'Починить «Газель» к выезду. Выезд через 20 минут.',
+    'Выяснить, почему «Газель» глохнет только при начальнике.',
+    'Поменять колесо на «Газели». Домкрат остался в гараже.',
+    'Прикрутить отвалившийся бампер. Синей изолентой, как положено.',
+    'Пройти техосмотр на «Газели» и объяснить, почему не горят фары.',
+    'Съездить на «Газели» за запчастями для «Газели».',
+  ]},
+];
+const BOSS_START = [
+  'Крутите барабан!','Барабан крутится — работа ищет героя!','Ну-ка, что у нас сегодня для Алексея?',
+  'Внимание! Задание формируется!','Алексей, не отходите далеко!','Вращайте, вращайте!',
+  'Нужно сесть обсудить… после барабана.','Надо всем помогать! Особенно Алексею.','Барабан не обманешь!'];
+const BOSS_RESULT = [
+  'Алексей! Задание для вас!','Сектор «{s}» на барабане!','Приз в студию! То есть Лёху.',
+  'Сектор «{s}»! Аплодисменты!','Алексей, это судьба!','Ой… кажется, я тупанул. Но задание остаётся!',
+  'Нужно сесть обсудить. Алексей, садитесь — и за работу.','Надо всем помогать, Алексей!',
+  'Грустненько… но надо.','Сектор «{s}»! Кто бы сомневался.'];
+const BOSS_TIRED = [
+  'Грустненько… Алексей, держитесь!','Ой-ой, кажется, я тупанул с нагрузкой…',
+  'Нужно сесть обсудить график Алексея. Потом.','Алексей, отпуск уже близко! Наверное.'];
+const BOSS_IDLE = [
+  'Нужно сесть обсудить…','Надо всем помогать.','Грустненько.','Ой, кажется, я тупанул.',
+  'Коллеги, у нас всё под контролем. Почти.','Так, где мой кофе… А, это Лёхин.','Я просто спросить…',
+  'Давайте без паники. Паникую только я.'];
+/* Лёха ворчит на каждое задание */
+const LEXA = [
+  'Как вы меня все задолбали…','Опять я?..','Я ж только присел…','Сделаю… после кофе.','А премия будет?',
+  'Понял, принял… эх.','А можно в следующем квартале?','У меня обед по графику…','Кто, если не я. Как всегда.',
+  'Я связист, а не волшебник…','А в инструкции такого нет.','Можно я хотя бы кофе допью?','Это точно мне?',
+  'Уже бегу. Мысленно.','Я в отпуске должен быть…','А Петрович что делает?','Задолбали, честное слово.',
+  'Я вам не робот. Хотя уже почти.','Может, сразу меня в акт списания?','Заявку в письменном виде, пожалуйста.',
+  'Кофе, дай мне сил…','Вы издеваетесь? Вы издеваетесь.'];
+const LEXA_FRESH = ['Легко! Сделаем! …Наверное.','Кофе есть — жить можно. Пока.','Уже бегу! Медленно.','Раз плюнуть. Но плевать буду долго.','Для любимого начальника — хоть на мачту. Шутка.'];
+const LEXA_WRECK = ['Я… не… чувствую… ног…','На трассе меня покусала собака. Или я её.','Я уже часть кабеля…',
+  'Штаны дырявые, зато душа… тоже.','Пятая кружка кофе не помогает…','Как же вы меня задолбали… все… до одного…','Позовите Петровича…'];
+const TIRED = [[0,'Бодр и свеж (подозрительно)'],[20,'Слегка помят'],[40,'Пьёт третью кружку кофе'],[60,'Спит с открытыми глазами'],[80,'Мечтает об отпуске'],[95,'Просит отгул. Не дают.'],[100,'Разряжен в ноль']];
+/* Реплики Лёхи под конкретный сектор (смешиваются с общими) */
+const LEXA_BY = {
+  'Кабель':['Кабель сам себя не протянет…','Опять в колодец…','Где моя бухта…'],
+  'Мачта':['Высоко… я боюсь высоты. С утра.','Страховку кто-нибудь видел?','Оттуда хоть Wi-Fi ловит?'],
+  'АТС':['Выключить и включить. Проверено.','Алло, это я, АТС чинить иду.','Номер 100 — мой!'],
+  'Поиск':['Это не я!','Может, само найдётся?','Ищу. Мысленно уже нашёл.'],
+  'Выезд':['Опять 150 км ради розетки…','Бутерброды брать?','Кто за рулём? Я?'],
+  'ИБП':['30 кило каждый… спина, держись.','Пищит — значит живой.','Почему опять я грузчик?'],
+  'Акты':['Синей ручкой, понял…','Я связист, а не писарь!','Акт на акт — и ещё акт.'],
+  'Маркировка':['Все? Прям все?','Бирки кончились ещё вчера…','Подпишу. Криво, но подпишу.'],
+  'Рации':['Приём… приём… эх.','Лёха на связи. К сожалению.','Рация не для мамы, понял.'],
+  'Принтер':['Я связист, а не принтерщик!','Он меня боится, это точно.','Опять бухгалтерия…'],
+  'Инструктаж':['Я его наизусть знаю…','Где расписаться? Везде?','Можно я там посплю?'],
+  'Дежурство':['Ночь… кофе… кросс…','Спать буду на планёрке.','Опять без выходных.'],
+  'Кросс':['400 пар… тестер сел…','Лапша моя любимая.','Вася, я трогаю!'],
+  'Кладовка':['Модем 98-го… классика.','Ничего не выкидывать, помню.','Там я и останусь жить.'],
+  'Камеры':['Голуби опять поработали…','Снимает небо — красиво же.','Пароль admin? Нет?'],
+  'Юзеры':['Кнопочку включили?','Перезагрузить пробовали?','Я не айтишник! А, ладно…'],
+  'Газель':['Газель — моя вторая жена.','Она опять не заводится? Какой сюрприз.','Изолента есть — Газель поедет.'],
+};
+/* Что Лёха говорит о прошлом задании, когда барабан крутится снова */
+const LEXA_DONE = {
+  'Кабель':['Кабель протянул. Мышь в лотке передаёт привет.','Протянул. Руки теперь тоже протянул.'],
+  'Мачта':['С мачты слез. Антенна больше не грустит. Грущу я.','Был наверху. Там хорошо. Там нет вас.'],
+  'АТС':['АТС перезагрузил. Сделал вид, что так и было.','Номер 100 теперь мой. Шучу. Или нет.'],
+  'Поиск':['Нашёл! Оно было у Петровича.','Нашёл. Не спрашивайте где.'],
+  'Выезд':['Съездил. Вилку в розетку воткнул. 300 км.','Вернулся. Бутерброды не вернулись.'],
+  'ИБП':['16 аккумуляторов… спина теперь тоже аккумулятор. Разряженный.','ИБП больше не пищит. Пищу я.'],
+  'Акты':['Акты подписал. Синей ручкой!','Бумаги сдал. Дерево где-то плачет.'],
+  'Маркировка':['Всё промаркировал. Себя тоже.','Бирки наклеил. Пальцы склеил.'],
+  'Рации':['Рации настроил. Такси теперь слушает нас.','Приём… приём… сделано.'],
+  'Принтер':['Принтер починил. Он меня теперь боится.','Бухгалтерия довольна. Я — нет.'],
+  'Инструктаж':['Инструктаж прошёл. Расписался 7 раз. Рука не прошла.','Теперь я знаю всё. И ничего.'],
+  'Дежурство':['Отдежурил. Спал ровно 0 минут.','После дежурства — сразу к вам. Счастье.'],
+  'Кросс':['Кросс прозвонил. Вася, кстати, трогал.','400 пар… я теперь сам пара. Пара нервов.'],
+  'Кладовка':['Кладовку разобрал. Нашёл модем и смысл жизни. Модем работает.','Ничего не выкинул. Как велели.'],
+  'Камеры':['Камеру повернул. Голуби повернули обратно.','Камеры работают. Табуретку унёс Петрович.'],
+  'Юзеры':['Кнопочку включил. Интернет «починил».','Пасьянс вернул. Директор счастлив.'],
+  'Газель':['Газель завёл. С толкача. Спина не завелась.','Газель поехала! Метров сто.'],
+};
+const bags = TASKS.map(() => []);
+function nextVariant(i){
+  if (!bags[i].length) bags[i] = TASKS[i].v.map((_, k) => k).sort(() => Math.random() - .5);
+  return TASKS[i].v[bags[i].pop()];
+}
+
+const N = TASKS.length, A = 360 / N;
+const COLORS = ['#e63946','#ffb703','#1d7fd8','#2a9d5c','#8e44ad','#f77f00','#00a6a6'];
+const $ = id => document.getElementById(id);
+const rotor = $('rotor'), pointer = $('pointer');
+
+(function buildWheel(){
+  const R = 188, ns = 'http://www.w3.org/2000/svg', g = $('sectors');
+  const pt = deg => [R*Math.cos((deg-90)*Math.PI/180), R*Math.sin((deg-90)*Math.PI/180)];
+  TASKS.forEach((t,i) => {
+    const [x0,y0] = pt(i*A), [x1,y1] = pt((i+1)*A);
+    const p = document.createElementNS(ns,'path');
+    p.setAttribute('d',`M0 0 L${x0} ${y0} A${R} ${R} 0 0 1 ${x1} ${y1} Z`);
+    p.setAttribute('fill', COLORS[i % COLORS.length]); p.dataset.i = i;
+    p.setAttribute('stroke','#ffe6a0'); p.setAttribute('stroke-width','2');
+    g.appendChild(p);
+    const lab = document.createElementNS(ns,'g');
+    lab.setAttribute('class','lab'); lab.dataset.i = i;
+    lab.setAttribute('transform',`rotate(${i*A + A/2})`);
+    lab.innerHTML =
+      `<text y="-150" text-anchor="middle" dominant-baseline="middle" font-size="24">${t.icon}</text>
+       <text transform="translate(0,-92) rotate(-90)" text-anchor="middle" dominant-baseline="middle"
+         font-family="Russo One,sans-serif" font-size="${t.short.length > 8 ? 11 : 13}" fill="#fff"
+         stroke="rgba(0,0,0,.45)" stroke-width="3" paint-order="stroke">${t.short}</text>`;
+    g.appendChild(lab);
+  });
+  const b = $('bulbs');
+  for (let i = 0; i < N*2; i++) {
+    const a = (i*360/(N*2) - 90) * Math.PI/180;
+    const c = document.createElementNS(ns,'circle');
+    c.setAttribute('cx', 200*Math.cos(a)); c.setAttribute('cy', 200*Math.sin(a)); c.setAttribute('r', 5);
+    c.setAttribute('class', 'bulb' + (i % 2 ? ' odd' : ''));
+    b.appendChild(c);
+  }
+})();
+
+/* ---------- звук ---------- */
+let ac;
+function audio(){ if(!ac) try{ ac = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} if(ac && ac.state==='suspended') ac.resume(); return ac; }
+function tone(freq, dur, type='square', vol=.08, when=0){
+  if(!ac) return;
+  const t = ac.currentTime + when, o = ac.createOscillator(), g = ac.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+  o.connect(g).connect(ac.destination); o.start(t); o.stop(t + dur + .02);
+}
+const tick = () => tone(1700, .035, 'square', .05);
+function fanfare(){ [523,659,784,1047,784,1047].forEach((f,i)=>tone(f, i===5?.5:.16,'triangle',.12,i*.13)); }
+function sigh(){ if(!ac) return; const t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();
+  o.type='sine'; o.frequency.setValueAtTime(260,t); o.frequency.exponentialRampToValueAtTime(120,t+.9);
+  g.gain.setValueAtTime(.001,t); g.gain.linearRampToValueAtTime(.09,t+.15); g.gain.exponentialRampToValueAtTime(.0001,t+1);
+  o.connect(g).connect(ac.destination); o.start(t); o.stop(t+1.05); }
+
+/* ---------- пузыри ---------- */
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const timers = {};
+function say(who, text, ms=2600){
+  const el = $(who + 'Bubble'); el.textContent = text; el.classList.add('show');
+  if (who === 'boss') $('boss').classList.add('talking');
+  clearTimeout(timers[who]); clearTimeout(timers[who+'m']);
+  timers[who+'m'] = setTimeout(()=> $('boss').classList.remove('talking'), Math.min(ms, 1400));
+  timers[who] = setTimeout(()=> el.classList.remove('show'), ms);
+}
+
+/* ---------- Лёха: вид и походка зависят от усталости ---------- */
+const slot = $('lexaSlot'), lexa = $('lexa');
+const LEVELS = [ // с какого % усталости, время выхода на сцену, темп шага
+  {from:0,  walk:1.1, step:.26},
+  {from:20, walk:1.5, step:.34},
+  {from:40, walk:1.9, step:.42},
+  {from:60, walk:2.5, step:.55},
+  {from:80, walk:3.3, step:.66},
+];
+let lexaLine = '', level = 0;
+function applyLevel(){
+  level = LEVELS.reduce((l, L, i) => tired >= L.from ? i : l, 0);
+  for (let i = 1; i <= 4; i++) lexa.classList.toggle('l' + i, i <= level);
+  slot.style.setProperty('--walk', LEVELS[level].walk + 's');
+  slot.style.setProperty('--step', LEVELS[level].step + 's');
+  slot.classList.toggle('limp', level === 4);
+}
+function chooseLexaLine(task){
+  const r = Math.random();
+  if (level === 0 && r < .4) return pick(LEXA_FRESH);
+  if (level === 4 && r < .5) return pick(LEXA_WRECK);
+  return r < .75 && LEXA_BY[task.short] ? pick(LEXA_BY[task.short]) : pick(LEXA);
+}
+function lexaOut(){
+  if (!slot.classList.contains('in')) return;
+  slot.classList.remove('in','idle','jump'); slot.classList.add('out');
+  $('lexaBubble').classList.remove('show');
+}
+function lexaIn(){
+  applyLevel();
+  slot.classList.remove('out','idle','jump'); void slot.offsetWidth; slot.classList.add('in');
+  setTimeout(() => {
+    slot.classList.add('idle'); sigh();
+    if (tired >= 100) return burnout();
+    say('lexa', lexaLine || pick(LEXA), 4200);
+  }, LEVELS[level].walk * 1000);
+}
+
+/* ---------- усталость и журнал ---------- */
+let tired = 0, count = 0;
+function renderTired(){
+  $('tiredBar').style.width = tired + '%'; $('tiredPct').textContent = tired + '%';
+  $('tiredText').textContent = TIRED.filter(t => tired >= t[0]).pop()[1];
+}
+function addTired(task, text){
+  tired = Math.min(100, tired + 6 + Math.floor(Math.random()*9));
+  renderTired();
+  const li = document.createElement('li'); li.textContent = task.icon + ' ' + text;
+  $('log').prepend(li); count++;
+}
+
+/* ---------- кручение ---------- */
+let rot = 0, spinning = false, lastIdx = -1, prevTask = null, burned = false;
+function spin(){
+  if (spinning || burned) return;
+  spinning = true; audio();
+  $('spinBtn').disabled = true;
+  $('wheelWrap').classList.add('spinning');
+  $('boss').classList.add('pointing');
+  say('boss', pick(BOSS_START), 2200);
+  // Лёха отчитывается о прошлом задании и уходит
+  if (prevTask && slot.classList.contains('in')) {
+    say('lexa', pick(LEXA_DONE[prevTask.short] || LEXA), 1700);
+    setTimeout(lexaOut, 1500);
+  } else lexaOut();
+  $('sectors').classList.remove('picked');
+  document.querySelectorAll('#sectors .win').forEach(e => e.classList.remove('win'));
+  $('badge').classList.remove('show');
+  $('plaqueLabel').textContent = 'БАРАБАН КРУТИТСЯ…';
+  $('taskText').textContent = '• • •';
+
+  let idx; do { idx = Math.floor(Math.random()*N); } while (idx === lastIdx);
+  lastIdx = idx;
+  const within = A * (0.32 + Math.random()*0.36); // ближе к центру сектора — чтобы было однозначно видно
+  const targetMod = (360 - (idx*A + within)) % 360;
+  let delta = targetMod - ((rot % 360) + 360) % 360; if (delta < 0) delta += 360;
+  delta += 360 * (4 + Math.floor(Math.random()*2));
+
+  const start = rot, dur = 2300 + Math.random()*700, t0 = performance.now();
+  let lastSec = Math.floor(start / A);
+  function frame(now){
+    const t = Math.min(1, (now - t0) / dur);
+    const e = 1 - Math.pow(1 - t, 3.4);
+    rot = start + delta * e;
+    rotor.setAttribute('transform', `rotate(${rot})`);
+    const s = Math.floor(rot / A);
+    if (s !== lastSec) { lastSec = s; tick(); pointer.classList.remove('flick'); void pointer.getBBox(); pointer.classList.add('flick'); }
+    if (t < 1) requestAnimationFrame(frame); else finish(idx);
+  }
+  requestAnimationFrame(frame);
+}
+
+function typeText(el, text){
+  el.textContent = ''; let i = 0;
+  const step = () => { el.textContent = text.slice(0, ++i); if (i < text.length) setTimeout(step, 22); };
+  step();
+}
+
+function finish(idx){
+  const task = TASKS[idx], text = nextVariant(idx);
+  prevTask = task;
+  $('wheelWrap').classList.remove('spinning');
+  fanfare();
+  const col = COLORS[idx % COLORS.length];
+  document.querySelectorAll(`#sectors [data-i="${idx}"]`).forEach(e => e.classList.add('win'));
+  $('sectors').classList.add('picked');
+  const badge = $('badge');
+  badge.style.setProperty('--sec', col);
+  badge.innerHTML = `<small>СЕКТОР</small>${task.icon} ${task.short.toUpperCase()}`;
+  badge.classList.add('show');
+  const pl = $('plaque'); pl.classList.remove('reveal'); void pl.offsetWidth; pl.classList.add('reveal');
+  $('plaqueLabel').textContent = `ЗАДАНИЕ №${count + 1}`;
+  typeText($('taskText'), text);
+  addTired(task, text);
+  applyLevel();
+  $('lexaProp').textContent = task.icon;
+  lexa.classList.add('has-prop');
+  lexaLine = chooseLexaLine(task);
+  const bossPool = tired >= 60 && Math.random() < .5 ? BOSS_TIRED : BOSS_RESULT;
+  say('boss', pick(bossPool).replace('{s}', task.short), 2600);
+  setTimeout(() => $('boss').classList.remove('pointing'), 900);
+  setTimeout(lexaIn, 500);
+  setTimeout(() => { if (tired >= 100) return; spinning = false; $('spinBtn').disabled = false; }, 2300);
+}
+
+/* ---------- 100%: Лёха разрядился → суперприз → звонок с ГРС ---------- */
+function powerDown(){ if(!ac) return; const t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();
+  o.type='sawtooth'; o.frequency.setValueAtTime(600,t); o.frequency.exponentialRampToValueAtTime(40,t+1.2);
+  g.gain.setValueAtTime(.08,t); g.gain.exponentialRampToValueAtTime(.0001,t+1.3);
+  o.connect(g).connect(ac.destination); o.start(t); o.stop(t+1.35); }
+function ring(){ for (let k = 0; k < 3; k++) for (let i = 0; i < 8; i++) tone(i % 2 ? 1300 : 1000, .05, 'square', .05, 2.2 + k*.9 + i*.05); }
+function confetti(){
+  const cols = ['#ffd24a','#e63946','#1d7fd8','#2a9d5c','#8e44ad','#f77f00','#fff'];
+  for (let i = 0; i < 90; i++) {
+    const c = document.createElement('i'); c.className = 'confetti';
+    c.style.left = Math.random()*100 + 'vw'; c.style.background = pick(cols);
+    c.style.animationDuration = 2.2 + Math.random()*2 + 's'; c.style.animationDelay = Math.random()*.8 + 's';
+    document.body.appendChild(c); setTimeout(() => c.remove(), 5200);
+  }
+}
+function burnout(){
+  burned = true;
+  say('lexa', 'Всё… как же вы меня… задолбали… батарейка… села…', 2600);
+  setTimeout(() => {
+    slot.classList.add('collapsed'); powerDown();
+    say('boss', 'Ой… кажется, я тупанул. Лёха разрядился! В студии — СУПЕРИГРА!', 4000);
+    const b = $('spinBtn'); b.textContent = '🎁 СУПЕРПРИЗ!'; b.classList.add('super'); b.disabled = false;
+  }, 2400);
+}
+function superPrize(){
+  const b = $('spinBtn'); if (b.disabled) return; b.disabled = true;
+  fanfare(); confetti();
+  slot.classList.remove('collapsed'); lexa.classList.add('vacation');
+  say('boss', 'Алексей! Ваш суперприз — ОТПУСК на 14 дней!', 3000);
+  setTimeout(() => say('lexa', 'УРА-А-А! ОТПУСК!!!', 2000), 800);
+  setTimeout(() => { slot.classList.remove('idle'); slot.classList.add('jump'); }, 1200);
+  setTimeout(() => { slot.classList.remove('in','jump'); $('mCount').textContent = count; $('modal').classList.add('show'); ring(); }, 3200);
+}
+function newShift(){
+  $('modal').classList.remove('show');
+  burned = false; tired = 0; count = 0; prevTask = null; $('log').innerHTML = ''; renderTired();
+  lexa.classList.remove('vacation','has-prop');
+  const b = $('spinBtn'); b.textContent = 'КРУТИТЬ БАРАБАН!'; b.classList.remove('super'); b.disabled = false; spinning = false;
+  $('sectors').classList.remove('picked'); $('badge').classList.remove('show');
+  $('plaqueLabel').textContent = 'НОВАЯ СМЕНА';
+  $('taskText').textContent = 'Лёха вернулся из отпуска. Через 5 минут. Крутите барабан!';
+  lexaLine = 'Я отдохнул! Целых 5 минут… Как вы меня задолбали.';
+  lexaIn();
+  say('boss', 'Нужно сесть обсудить… а, нет, работаем! Алексей, с возвращением!', 3500);
+}
+
+function onButton(){ burned ? superPrize() : spin(); }
+$('spinBtn').addEventListener('click', onButton);
+$('newShift').addEventListener('click', newShift);
+document.addEventListener('keydown', e => {
+  if ($('modal').classList.contains('show')) return;
+  if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) { e.preventDefault(); if (!$('spinBtn').disabled) onButton(); }
+});
+// начальник иногда что-нибудь говорит сам по себе
+setInterval(() => {
+  if (!spinning && !burned && !$('bossBubble').classList.contains('show') && Math.random() < .6) say('boss', pick(BOSS_IDLE), 2600);
+}, 9000);
+applyLevel();
+setTimeout(() => say('boss', 'Добрый день! В студии служба связи. Крутите барабан!', 3500), 600);
+</script>
+</body>
+</html>
