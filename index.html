@@ -18,21 +18,20 @@
     background:radial-gradient(ellipse at 50% 0%,#2b3ea8 0%,var(--bg1) 45%,var(--bg2) 100%) fixed;
     overflow-x:hidden;
   }
-  header{text-align:center;padding:18px 16px 0}
+  header{text-align:center;padding:10px 16px 0}
   h1{
     font-family:"Russo One",sans-serif;font-weight:400;margin:0;
-    font-size:clamp(28px,5vw,56px);letter-spacing:2px;
+    font-size:clamp(24px,min(5vw,6.2vh),54px);letter-spacing:2px;
     background:linear-gradient(180deg,#fff6c9,#ffd24a 45%,#d98c14);
     -webkit-background-clip:text;background-clip:text;color:transparent;
     filter:drop-shadow(0 3px 0 #7a3d00) drop-shadow(0 0 18px rgba(255,200,60,.45));
   }
-  .sub{opacity:.8;font-size:clamp(13px,1.6vw,16px);margin-top:4px}
+  .sub{opacity:.8;font-size:clamp(12px,min(1.6vw,2vh),16px);margin-top:2px}
 
   /* ---------- сцена ---------- */
   .stage{
     position:relative;max-width:1240px;margin:10px auto 0;padding:0 16px;
     display:grid;grid-template-columns:1fr 1.35fr 1fr;align-items:end;gap:8px;
-    min-height:520px;
   }
   .stage::before,.stage::after{ /* прожекторы */
     content:"";position:absolute;top:-80px;width:320px;height:760px;pointer-events:none;
@@ -47,8 +46,11 @@
     position:absolute;left:0;right:0;bottom:-30px;height:110px;z-index:0;
     background:radial-gradient(ellipse at 50% 30%,rgba(90,120,255,.45),rgba(20,20,60,0) 70%);
   }
-  .slot{position:relative;z-index:1;display:flex;justify-content:center;align-items:flex-end;min-height:420px}
-  .slot svg.person{width:100%;max-width:250px;height:auto;overflow:visible}
+  .slot{position:relative;z-index:1;display:flex;justify-content:center;align-items:flex-end}
+  #bossSlot{z-index:4} /* рука начальника — поверх барабана */
+  .slot svg.person{width:auto;max-width:100%;overflow:visible}
+  #boss{height:min(57vh,540px)}
+  #lexa{height:min(51vh,482px)}
 
   /* ---------- пузыри ---------- */
   .bubble{
@@ -71,7 +73,7 @@
   #pointer.flick{animation:flick .12s ease-out}
   @keyframes flick{0%{transform:rotate(0)}40%{transform:rotate(-16deg)}100%{transform:rotate(0)}}
 
-  .wheel-box{position:relative;width:100%;max-width:470px}
+  .wheel-box{position:relative;width:100%;max-width:min(470px,44vh)}
   #sectors path{transition:opacity .35s, filter .35s}
   #sectors.picked path{opacity:.35;filter:saturate(.4)}
   #sectors.picked path.win{opacity:1;filter:none;animation:winGlow .7s ease-in-out infinite alternate}
@@ -88,40 +90,41 @@
   .badge.show{transform:translate(-50%,-50%) scale(1);opacity:1}
   .badge small{display:block;font-size:.42em;letter-spacing:2px;color:#ffe9a0;text-align:center}
   .spin-btn{
-    margin-top:14px;font-family:"Russo One",sans-serif;font-size:clamp(18px,2.4vw,26px);
+    margin-top:10px;font-family:"Russo One",sans-serif;font-size:clamp(17px,min(2.4vw,3vh),26px);
     color:#3a1c00;background:linear-gradient(180deg,#fff2a8,#ffc928 50%,#e39a0c);
-    border:0;border-radius:60px;padding:14px 38px;cursor:pointer;letter-spacing:1px;
+    border:0;border-radius:60px;padding:clamp(9px,1.6vh,14px) 38px;cursor:pointer;letter-spacing:1px;
     box-shadow:0 6px 0 #8a4d00,0 10px 26px rgba(255,190,40,.45);transition:transform .08s,box-shadow .08s;
   }
   .spin-btn:hover{filter:brightness(1.06)}
   .spin-btn:active{transform:translateY(4px);box-shadow:0 2px 0 #8a4d00,0 6px 16px rgba(255,190,40,.4)}
   .spin-btn:disabled{filter:grayscale(.6) brightness(.8);cursor:wait}
-  .hint{font-size:12px;opacity:.6;margin-top:8px}
+  .hint{font-size:12px;opacity:.6;margin-top:5px}
 
   /* ---------- табло с заданием ---------- */
   .board{
-    max-width:900px;margin:26px auto 0;padding:0 16px;position:relative;z-index:2;
+    max-width:1180px;margin:12px auto 0;padding:0 16px;position:relative;z-index:2;
+    display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:12px;align-items:stretch;
   }
   .plaque{
     background:linear-gradient(180deg,#0e2a78,#081a4d);border:4px solid var(--gold);
-    border-radius:18px;padding:18px 22px;text-align:center;min-height:118px;
+    border-radius:18px;padding:14px 20px;text-align:center;display:flex;flex-direction:column;justify-content:center;
     box-shadow:0 0 0 4px #5a3a06,0 0 40px rgba(255,210,74,.25),inset 0 0 30px rgba(0,0,0,.5);
   }
   .plaque .label{font-family:"Russo One",sans-serif;color:var(--gold);letter-spacing:2px;font-size:14px}
-  .plaque .task{font-size:clamp(18px,2.6vw,26px);font-weight:700;margin-top:8px;min-height:1.3em}
+  .plaque .task{font-size:clamp(17px,min(2.2vw,3vh),26px);font-weight:700;margin-top:6px;min-height:2.6em;display:flex;align-items:center;justify-content:center}
   .plaque.reveal{animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
   @keyframes pop{0%{transform:scale(.85)}100%{transform:scale(1)}}
 
-  .stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
-  .card{background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px 16px}
-  .card h3{margin:0 0 10px;font-family:"Russo One",sans-serif;font-weight:400;font-size:15px;color:var(--gold);letter-spacing:1px}
+  .stats{display:contents}
+  .card{background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 14px}
+  .card h3{margin:0 0 7px;font-family:"Russo One",sans-serif;font-weight:400;font-size:15px;color:var(--gold);letter-spacing:1px}
   .meter{height:18px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden}
   .meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3ad16a,#ffd24a 55%,#ff4b3e);transition:width .8s}
   .meter-cap{display:flex;justify-content:space-between;font-size:13px;margin-top:6px;opacity:.85}
-  ol.log{margin:0;padding-left:20px;max-height:150px;overflow:auto;font-size:14px;line-height:1.45}
+  ol.log{margin:0;padding-left:20px;max-height:72px;overflow:auto;font-size:14px;line-height:1.45}
   ol.log li{opacity:.9}
   ol.log:empty::before{content:"Пока пусто — Лёха отдыхает.";opacity:.55;margin-left:-20px}
-  footer{text-align:center;font-size:12px;opacity:.45;padding:24px 16px}
+  footer{text-align:center;font-size:12px;opacity:.45;padding:16px}
 
   /* ---------- подписи под героями (как в ТВ) ---------- */
   .chyron{
@@ -248,11 +251,11 @@
   .modal .big{font-family:"Russo One",sans-serif;font-size:clamp(28px,5vw,44px);color:var(--gold)}
   .modal p{font-size:17px;margin:10px 0}
   .modal .call{margin:16px 0;padding:12px;border-radius:12px;background:#3a0d12;border:2px solid #ff4b3e;font-size:17px;opacity:0}
-  .modal.show .call{animation:ringIn .5s ease-out 2.2s both, shake .5s ease-in-out 2.7s 3}
+  .modal.show .call{animation:ringIn .5s ease-out 2.6s both, shake .5s ease-in-out 3.1s 3}
   .modal .small{opacity:0;font-size:14px}
-  .modal.show .small{animation:ringIn .5s ease-out 3.4s both}
+  .modal.show .small{animation:ringIn .5s ease-out 5s both}
   .modal .spin-btn{opacity:0}
-  .modal.show .spin-btn{animation:ringIn .5s ease-out 3.8s both}
+  .modal.show .spin-btn{animation:ringIn .5s ease-out 6.2s both}
   @keyframes ringIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
   @keyframes shake{25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
   .confetti{position:fixed;top:-20px;width:10px;height:16px;z-index:60;pointer-events:none;animation:fall linear forwards}
@@ -270,11 +273,13 @@
     .stage{grid-template-columns:1fr 1fr;grid-template-rows:auto;min-height:0;margin-top:4px;padding:0 6px}
     .stage::before,.stage::after{width:180px}
     .wheel-wrap{grid-column:1 / 3;grid-row:1}
-    .wheel-box{max-width:min(92vw,470px)}
+    .wheel-box{max-width:min(92vw,470px,56vh)}
     #bossSlot{grid-column:1;grid-row:1;justify-self:start}
     #lexaSlot{grid-column:2;grid-row:1;justify-self:end}
     .slot{min-height:0;align-self:end;margin-bottom:var(--under-wheel,96px);z-index:3;width:clamp(96px,27vw,200px);pointer-events:none}
-    .slot svg.person{max-width:100%}
+    .slot svg.person,#boss,#lexa{width:100%;height:auto;max-width:100%}
+    #boss.pointing .arm-point{transform:rotate(-112deg)} /* на телефоне показывает вверх, на стрелку, не закрывая табличку */
+    #lexa{width:90%}
     .bubble{font-size:12px;max-width:150px;padding:7px 10px;border-radius:12px;transform:translate(-50%,-6px) scale(.6)}
     .bubble.show{transform:translate(-50%,-6px) scale(1)}
     #bossSlot .bubble,#bossSlot .bubble.show{left:0;transform-origin:30% 100%}
@@ -285,10 +290,10 @@
     .chyron{font-size:9px;padding:3px 6px;border-radius:6px;letter-spacing:0;bottom:-4px}
     .chyron small{font-size:8px}
     .spin-btn{margin-top:10px;padding:12px 30px}
-    .board{margin-top:14px;padding:0 10px}
-    .plaque{padding:12px 14px;min-height:0}
+    .board{margin-top:12px;padding:0 10px;grid-template-columns:1fr}
+    .plaque{padding:12px 14px}
+    .plaque .task{min-height:0}
     .plaque .label{font-size:12px}
-    .stats{grid-template-columns:1fr;gap:10px;margin-top:10px}
     .modal p,.modal .call{font-size:15px}
   }
   @media (max-width:820px) and (hover:none){.slot{--under-wheel:72px}}
@@ -306,7 +311,6 @@
   <!-- ===== Начальник службы связи ===== -->
   <div class="slot" id="bossSlot">
     <div class="bubble" id="bossBubble"></div>
-    <div class="chyron">НАЧАЛЬНИК СЛУЖБЫ СВЯЗИ</div>
     <svg id="boss" class="person" viewBox="0 0 220 470" aria-label="Начальник службы связи">
       <ellipse cx="110" cy="458" rx="72" ry="10" fill="rgba(0,0,0,.4)"/>
       <g class="body">
@@ -327,7 +331,10 @@
         <path d="M110 218 L110 310" stroke="#1a3f82" stroke-width="2"/>
         <circle cx="113" cy="236" r="3" fill="#10275a"/><circle cx="113" cy="262" r="3" fill="#10275a"/>
         <path d="M128 176 h18" stroke="#1a3f82" stroke-width="2"/>
-        <path d="M130 176 l3 -7 l3 5 l3 -6 l3 5 l3 -4 v7z" fill="#fff"/>
+        <g transform="translate(137 165)">
+          <path d="M-1 1 q-10 -2 -10 3 q0 8 7 8 q4 0 4 -6z M1 1 q10 -2 10 3 q0 8 -7 8 q-4 0 -4 -6z" fill="#2b3440" stroke="#d4af37" stroke-width="1"/>
+          <path d="M-8 3 l3 -1 M4 3 l3 -1" stroke="#fff" stroke-width="1" opacity=".6"/>
+        </g>
         <circle cx="92" cy="165" r="3.2" fill="#0a7fd6" stroke="#fff" stroke-width="1"/>
         <!-- левая рука с микрофоном -->
         <g class="mic">
@@ -363,19 +370,19 @@
           <ellipse cx="137" cy="94" rx="7" ry="11" fill="#e6b88e"/>
           <ellipse cx="110" cy="90" rx="27" ry="34" fill="#eec39a"/>
           <!-- седые зачёсанные назад волосы -->
-          <path d="M84 84 Q80 56 108 53 Q138 52 137 82 Q134 66 124 63 Q112 60 100 63 Q88 67 84 84Z" fill="#e4e4e4"/>
-          <path d="M92 66 Q108 58 128 64 M94 72 Q110 64 130 70" stroke="#c4c4c4" stroke-width="1.5" fill="none"/>
-          <path d="M84 84 q-3 10 0 16 M136 84 q3 10 0 16" stroke="#d6d6d6" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M83 86 Q78 51 110 49 Q142 50 138 84 Q134 64 122 61 Q108 58 97 62 Q87 67 83 86Z" fill="#9c8b78"/>
+          <path d="M92 66 Q108 58 128 64 M94 72 Q110 64 130 70" stroke="#b9a996" stroke-width="1.5" fill="none"/>
+          <path d="M84 84 q-3 10 0 16 M136 84 q3 10 0 16" stroke="#8f7e6c" stroke-width="4" fill="none" stroke-linecap="round"/>
           <!-- морщины на лбу -->
-          <path d="M96 74 q14 -4 28 0 M98 79 q12 -3 24 0" stroke="#d29f76" stroke-width="1.2" fill="none"/>
+          <path d="M99 76 q11 -3 22 0" stroke="#dcae84" stroke-width="1" fill="none"/>
           <!-- брови и прищур -->
-          <path d="M93 86 q7 -4 13 -1 M114 85 q7 -3 13 1" stroke="#bdbdbd" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M93 86 q7 -4 13 -1 M114 85 q7 -3 13 1" stroke="#6f5f50" stroke-width="3" fill="none" stroke-linecap="round"/>
           <path d="M94 93 q6 -5 12 0" stroke="#2d2d2d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
           <path d="M114 93 q6 -5 12 0" stroke="#2d2d2d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
           <circle cx="100" cy="92" r="1.6" fill="#3a6ea8"/><circle cx="120" cy="92" r="1.6" fill="#3a6ea8"/>
           <!-- усталость: мешки и «гусиные лапки» -->
-          <path d="M94 98 q6 3 12 0 M114 98 q6 3 12 0" stroke="#c99a8c" stroke-width="1.5" fill="none"/>
-          <path d="M89 91 l-4 -2 M89 94 l-5 0 M131 91 l4 -2 M131 94 l5 0" stroke="#d29f76" stroke-width="1.1"/>
+          <path d="M94 98 q6 3 12 0 M114 98 q6 3 12 0" stroke="#c99a8c" stroke-width="1.2" fill="none" opacity=".5"/>
+          <path d="M89 92 l-4 -1 M131 92 l4 -1" stroke="#d29f76" stroke-width="1"/>
           <path d="M110 92 q-4 10 -1 14 q3 2 5 -1" stroke="#c98f64" stroke-width="2" fill="none"/>
           <path d="M96 106 q-3 5 -1 10 M124 106 q3 5 1 10" stroke="#d29f76" stroke-width="1.2" fill="none"/>
           <!-- широкая улыбка -->
@@ -594,7 +601,6 @@
         <text x="27" y="46" text-anchor="middle" font-size="15" fill="#ff6b60" font-family="Russo One,sans-serif">0%</text>
       </g>
     </svg>
-    <div class="chyron">ЛЁХА<small>электромонтёр связи 6 разряда</small></div>
   </div>
 </main>
 
@@ -616,10 +622,10 @@
   </div>
 </section>
 <div class="modal" id="modal"><div class="modal-card">
-  <div class="big">🏖️ ОТПУСК!</div>
-  <p>Лёха выполнил <b id="mCount">0</b> заданий и ушёл в отпуск на 14 дней.</p>
-  <div class="call">📞 Входящий звонок с ГРС:<br><b>«Алло! У нас телефон не звонит!»</b></div>
-  <p class="small">Отпуск Лёхи переносится на следующий квартал. Спасибо за понимание.</p>
+  <div class="big" id="mTitle"></div>
+  <p id="mText"></p>
+  <div class="call">📞 Входящий звонок: <span id="mFrom"></span><br><b id="mCall"></b></div>
+  <p class="small" id="mEnd"></p>
   <button class="spin-btn" id="newShift">НОВАЯ СМЕНА</button>
 </div></div>
 <footer>Шуточная игра. Все совпадения с реальными электромонтёрами случайны. Лёху берегите.</footer>
@@ -628,7 +634,7 @@
 /* Секторы барабана. v — варианты заданий: при выпадении сектора берётся случайный,
    и пока не выпадут все варианты сектора, повторов не будет. */
 const TASKS = [
-  {icon:'🔌', short:'Кабель', v:[
+  {icon:'🔌', short:'Кабель', load:[8,13], v:[
     'Протянуть 300 метров кабеля до компрессорной станции. До обеда.',
     'Проложить кабель через лоток, в котором уже лежит 40 кабелей и одна дохлая мышь.',
     'Найти обрыв кабеля на трассе длиной 12 км. Трассоискатель в ремонте с 2019 года.',
@@ -639,8 +645,13 @@ const TASKS = [
     'Протянуть оптику в соседний корпус «по-быстрому, там метров двадцать». Там двести.',
     'Замерить сопротивление изоляции всех линий. Мегаомметр вернётся с поверки в пятницу.',
     'Убрать кабельные бухты из коридора, пока не приехала проверка.',
+    'Проложить кабель по потолку. Потолок подвесной, стремянки нет.',
+    'Смотать 500 метров старого кабеля. Он запутался ещё в 2010-м.',
+    'Прокинуть кабель под дорогой. Перекрывать дорогу запретили.',
+    'Найти, кто перерубил кабель экскаватором. Экскаваторщик «ничего не копал».',
+    'Проложить кабель к новому вагончику. Вагончик переставят завтра.',
   ]},
-  {icon:'📡', short:'Мачта', v:[
+  {icon:'📡', short:'Мачта', load:[10,16], v:[
     'Залезть на мачту связи и посмотреть, почему «антенна грустная».',
     'Поменять лампу заградительного огня на 60 метрах. Ветер 15 м/с.',
     'Проверить крепление антенн после урагана. Мачта на месте — уже хорошо.',
@@ -651,8 +662,13 @@ const TASKS = [
     'Проверить молниезащиту мачты. Очень вовремя: гроза через час.',
     'Подняться на мачту с комиссией. Комиссия остаётся внизу и даёт указания.',
     'Снять с мачты старую антенну. Весит как холодильник, списана в 2004-м.',
+    'Посчитать болты на мачте. Для инвентаризации. Все.',
+    'Снять с антенны воздушный шарик с надписью «С юбилеем».',
+    'Проверить наклон мачты. На глаз: лазер уехал.',
+    'Поднять на мачту новый облучатель. Лебёдка «сейчас будет».',
+    'Залезть на мачту зимой и сбить наледь. Каска есть, валенок нет.',
   ]},
-  {icon:'☎️', short:'АТС', v:[
+  {icon:'☎️', short:'АТС', load:[5,9], v:[
     'Перезагрузить АТС и сделать вид, что так и было задумано.',
     'Перенастроить внутренние номера. Все хотят номер 100.',
     'Выяснить, почему у директора в трубке играет радио.',
@@ -663,8 +679,13 @@ const TASKS = [
     'Разобраться, кто звонил в Магадан по служебному.',
     'Записать новое голосовое приветствие. Голос нужен бодрый.',
     'Настроить конференц-связь на 40 участников. У половины телефоны из 90-х.',
+    'Выяснить, почему все звонки уходят в столовую.',
+    'Отключить межгород всем, кроме начальства. И себе тоже.',
+    'Поставить музыку на удержание. Все хотят разную.',
+    'Найти, кто полгода звонит по ночам на номер 111.',
+    'Перенести АТС в новую комнату. Комната ещё строится.',
   ]},
-  {icon:'🔍', short:'Поиск', v:[
+  {icon:'🔍', short:'Поиск', load:[5,9], v:[
     'Найти, куда делся синий патч-корд из серверной. Все знают, что это ты.',
     'Найти ключ от шкафа связи. Последним его видел Петрович, в 2020-м.',
     'Найти, какой кабель в кроссе идёт в бухгалтерию. Схемы нет, есть легенды.',
@@ -675,8 +696,13 @@ const TASKS = [
     'Найти второй ключ от серверной. И первый тоже найти.',
     'Найти стремянку. АХО забрало её «на пять минут» неделю назад.',
     'Найти, кто выдернул вилку в серверной, чтобы зарядить телефон.',
+    'Найти журнал учёта. Его брали «на минутку» в прошлом квартале.',
+    'Найти, откуда в серверной пахнет жареной картошкой.',
+    'Найти пульт от кондиционера в серверной. Там +35.',
+    'Найти, чей роутер раздаёт Wi-Fi «Petrovich_5G».',
+    'Найти в архиве схему связи 1979 года. В архиве потоп.',
   ]},
-  {icon:'🚙', short:'Выезд', v:[
+  {icon:'🚙', short:'Выезд', load:[9,14], v:[
     'Съездить на ГРС за 150 км: там «телефон не звонит». Телефон выключен из розетки.',
     'Съездить на КС проверить связь. Машина будет, водитель в отпуске.',
     'Выехать к крановому узлу на трассе. Дорога есть на карте, но не в жизни.',
@@ -687,8 +713,13 @@ const TASKS = [
     'Отвезти документы в Москву лично. Почте не доверяют.',
     'Объехать 8 ГРС за день и снять показания. Бензина хватит на пять.',
     'Выехать на объект по бездорожью. «Нива» уже в пути. Ну, почти.',
+    'Съездить на объект за подписью. Подписант уехал к тебе за подписью.',
+    'Выехать в 5 утра, чтобы успеть к 8. Ехать час.',
+    'Отвезти комиссию на объект и вернуть обратно. Всю. Живой.',
+    'Съездить на крановый узел в распутицу. Трактор — по заявке.',
+    'Съездить на ГРС поменять лампочку. Лампочку взять свою.',
   ]},
-  {icon:'🔋', short:'ИБП', v:[
+  {icon:'🔋', short:'ИБП', load:[10,15], v:[
     'Заменить аккумуляторы в ИБП. Каждый весит 30 кг, их 16.',
     'Выяснить, почему ИБП пищит третий день. Все привыкли, мешает только тебе.',
     'Провести тест разряда ИБП. Во время совещания у директора.',
@@ -699,8 +730,13 @@ const TASKS = [
     'Проверить дизель-генератор. Он не заводился с прошлой зимы.',
     'Разобраться, почему свет моргает только в серверной.',
     'Протереть пыль в ИБП. Пыль там с момента установки.',
+    'Выяснить, кто подключил к ИБП обогреватель.',
+    'Настроить уведомления ИБП на почту. Почта не работает без ИБП.',
+    'Заменить вентилятор в ИБП. Он гудит, как «Газель».',
+    'Провести ревизию всех ИБП на площадке. Их 40, списка нет.',
+    'Переключить нагрузку на байпас. Не перепутать. НЕ ПЕРЕПУТАТЬ!',
   ]},
-  {icon:'📝', short:'Акты', v:[
+  {icon:'📝', short:'Акты', load:[5,9], v:[
     'Подписать 12 актов, 3 журнала и объяснительную за вчерашнюю объяснительную.',
     'Составить акт списания мыши. Компьютерной. Она была одна.',
     'Составить акт выполненных работ за квартал. Работы делал, но какие — не помнишь.',
@@ -711,8 +747,13 @@ const TASKS = [
     'Составить акт на списание кабеля. Кабель на месте, а в 1С его уже нет.',
     'Составить акт приёма-передачи ключа от серверной. Самому себе.',
     'Найти акт 2018 года, от которого зависит судьба всей службы.',
+    'Составить акт о том, что акт составлен.',
+    'Переписать акт по новому шаблону. Шаблон снова поменяют в пятницу.',
+    'Поставить печать на 40 листов. Печать у секретаря, секретарь на больничном.',
+    'Согласовать акт в СЭД. СЭД «думает» с понедельника.',
+    'Составить акт на кружку «КОФЕ». Она теперь основное средство.',
   ]},
-  {icon:'🏷️', short:'Маркировка', v:[
+  {icon:'🏷️', short:'Маркировка', load:[6,10], v:[
     'Промаркировать все кабели в стойке. Да, все. Да, вручную.',
     'Перемаркировать всё по новому стандарту. Старый ввели в прошлом месяце.',
     'Наклеить бирки на все розетки в здании. Принтер этикеток в ремонте.',
@@ -723,8 +764,13 @@ const TASKS = [
     'Нанести инвентарные номера на всё оборудование. На мачте тоже.',
     'Промаркировать кабели в колодце. В колодце вода, бирки не клеятся.',
     'Выяснить, куда идёт кабель с биркой «НЕ ТРОГАТЬ!!!». Никто не знает.',
+    'Промаркировать все патч-корды. У каждого своё мнение о своей длине.',
+    'Повесить на щиток табличку «ОПАСНО». Щиток в курсе.',
+    'Сделать бирки на английском для иностранной комиссии.',
+    'Промаркировать кабели в кабельном канале. Канал запаян.',
+    'Нанести маркировку на «Газель». Ей всё равно.',
   ]},
-  {icon:'📻', short:'Рации', v:[
+  {icon:'📻', short:'Рации', load:[5,9], v:[
     'Настроить радиостанции для линейщиков. Каждому — отдельно и с объяснением.',
     'Выяснить, почему в рации слышно такси.',
     'Зарядить 30 раций к утру. Зарядок шесть.',
@@ -735,8 +781,13 @@ const TASKS = [
     'Поставить на рации антенны от другой модели. «Надо подобрать».',
     'Настроить ретранслятор на холме. Холм в 40 км.',
     'Отучить водителя говорить в рацию «алло».',
+    'Найти, кто поёт в эфире по ночам.',
+    'Выдать рации новой бригаде и получить их обратно целыми.',
+    'Разобраться, почему рация пищит только у начальника.',
+    'Прикрутить рацию в «Газели». Держатель — изолента.',
+    'Придумать всем позывные. Никто не хочет быть «Ромашкой».',
   ]},
-  {icon:'🖨️', short:'Принтер', v:[
+  {icon:'🖨️', short:'Принтер', load:[6,10], v:[
     'Починить принтер в бухгалтерии. «Ты же связист, ты разбираешься».',
     'Заправить картридж. Тонер закончился ещё в прошлом году.',
     'Вытащить из принтера скрепку, степлер и чью-то зарплатную ведомость.',
@@ -747,8 +798,13 @@ const TASKS = [
     'Перенести МФУ весом 60 кг в кабинет на пятом этаже.',
     'Отсканировать архив за 10 лет. Сканер медленный, архив большой.',
     'Найти, кто отправил на печать PDF на 500 страниц. Все молчат.',
+    'Научить принтер печатать с двух сторон. Он принципиально против.',
+    'Выяснить, почему принтер печатает всё розовым.',
+    'Подключить принтер к Wi-Fi. Принтер старше Wi-Fi.',
+    'Распечатать презентацию на 200 слайдов. В цвете. Картриджа нет.',
+    'Объяснить, что «замятие бумаги» — это не вирус.',
   ]},
-  {icon:'🧯', short:'Инструктаж', v:[
+  {icon:'🧯', short:'Инструктаж', load:[4,8], v:[
     'Пройти инструктаж по охране труда. Снова. И расписаться 7 раз.',
     'Сдать экзамен по электробезопасности. Билеты поменяли вчера вечером.',
     'Провести инструктаж новичку. Новичок уже всё знает из YouTube.',
@@ -759,8 +815,13 @@ const TASKS = [
     'Участвовать в учебной тревоге. Тревога в пятницу в 17:55.',
     'Пройти обучение в СДО: 40 часов видео, перемотка отключена.',
     'Собрать всю бригаду на инструктаж. Бригада в поле.',
+    'Пройти вводный инструктаж. Ты тут работаешь 12 лет.',
+    'Сдать тест по ГО и ЧС. У вопроса 17 нет правильного ответа.',
+    'Прослушать вебинар о тайм-менеджменте. Три часа.',
+    'Показать новичку, как пользоваться стремянкой. Стремянки нет.',
+    'Сфотографироваться в СИЗ для стенда. Улыбаться.',
   ]},
-  {icon:'🌙', short:'Дежурство', v:[
+  {icon:'🌙', short:'Дежурство', load:[10,15], v:[
     'Ночное дежурство на узле связи. Потом — сразу на планёрку.',
     'Дежурство в новогоднюю ночь. Оливье принесёт начальник. Может быть.',
     'Подменить коллегу на дежурстве. Коллега подменял тебя в 2021-м.',
@@ -771,8 +832,13 @@ const TASKS = [
     'Отдежурить за себя и за того парня. Тот парень на Мальдивах.',
     'Ночное дежурство. Отчёт о нём сдать до конца дежурства.',
     'Дежурить, пока на КС идёт ремонт. Ремонт на три недели.',
+    'Дежурство в день корпоратива. Салат принесут. Может быть.',
+    'Дежурить у телефона, который не звонит. Вдруг позвонит.',
+    'Дежурить во время отключения света. Фонарик сел.',
+    'Дежурство в свой день рождения. Фото торта пришлют.',
+    'Дежурить и заодно учить стажёра. Стажёр спит.',
   ]},
-  {icon:'📶', short:'Кросс', v:[
+  {icon:'📶', short:'Кросс', load:[8,12], v:[
     'Прозвонить все пары в кроссе. Их 400. Тестер сел.',
     'Разобрать «лапшу» в кроссе. Лапша с 2005 года.',
     'Переключить 50 абонентов на новый кросс без перерыва связи.',
@@ -783,8 +849,13 @@ const TASKS = [
     'Перекроссировать всё после ночных «доработок» подрядчика.',
     'Разобраться с биркой в кроссе «Вася, не трожь».',
     'Перевесить кросс на соседнюю стену. «Так красивее».',
+    'Найти, кто включил чайник через кросс.',
+    'Подписать весь кросс, заменить бирки, нарисовать схему. К обеду.',
+    'Перекроссировать все контакты. Инструмент один на троих.',
+    'Выяснить, почему звонки охраны попадают в бухгалтерию.',
+    'Отключить неиспользуемые пары. Все «используются» с 2003 года.',
   ]},
-  {icon:'📦', short:'Кладовка', v:[
+  {icon:'📦', short:'Кладовка', load:[7,11], v:[
     'Разобрать кладовку со старыми модемами 1998 года. Выкидывать ничего нельзя.',
     'Провести инвентаризацию склада связи. Числится 200 телефонов, найдено 3.',
     'Найти в кладовке запасной блок питания. Он там точно есть. Наверное.',
@@ -795,8 +866,13 @@ const TASKS = [
     'Подготовить списание старой техники. Техника уже списана, отчётности нет.',
     'Найти коробку с надписью «Разное». Таких коробок 14.',
     'Разобрать «подарки» подрядчиков: 40 бухт неизвестного кабеля.',
+    'Найти в кладовке новогоднюю гирлянду. Для серверной.',
+    'Пересчитать все разъёмы RJ-45. Руками. По одному.',
+    'Освободить место под новый шкаф. Старый шкаф «ещё нужен».',
+    'Найти телефон с дисковым набором. Директор скучает по классике.',
+    'Проверить кладовку на мышей. Мыши проверили тебя первыми.',
   ]},
-  {icon:'📹', short:'Камеры', v:[
+  {icon:'📹', short:'Камеры', load:[6,10], v:[
     'Выяснить, почему камера на проходной снимает только небо.',
     'Установить камеру над въездом. Лестница короче, чем нужно.',
     'Восстановить запись за прошлую пятницу. Регистратор перезаписал её в субботу.',
@@ -807,8 +883,13 @@ const TASKS = [
     'Перенастроить камеру, которую повернули голуби.',
     'Заменить видеорегистратор. Пароль администратора никто не знает.',
     'Вывести все камеры начальнику на телефон. На кнопочный.',
+    'Найти, кто заклеил камеру стикером с котиком.',
+    'Установить камеру в курилке. Курильщики против.',
+    'Выяснить, почему камера на воротах снимает соседний двор.',
+    'Найти на записи, кто поцарапал «Газель». Спойлер: ворота.',
+    'Настроить все 60 камер к приезду комиссии. За час.',
   ]},
-  {icon:'💻', short:'Юзеры', v:[
+  {icon:'💻', short:'Юзеры', load:[5,9], v:[
     'Помочь коллеге, у которого «сломался интернет». Wi-Fi выключен кнопкой.',
     'Переустановить Windows начальнику отдела, сохранив все 3000 ярлыков.',
     'Объяснить, что Caps Lock — это не поломка.',
@@ -819,8 +900,13 @@ const TASKS = [
     'Настроить видеосвязь. Камера заклеена жвачкой «от шпионов».',
     'Вытащить флешку из сетевого разъёма.',
     'Вернуть на компьютер директора пасьянс «Паук». Срочно.',
+    'Объяснить коллеге, что мышку двигают по столу, а не в воздухе.',
+    'Установить «тот зелёный значок». Какой — никто не помнит.',
+    'Сменить пароль главбуху. Отговорить от «123456».',
+    'Настроить второй монитор. Потом убрать второй монитор.',
+    'Найти «пропавший интернет». Кабель лежит рядом с компьютером.',
   ]},
-  {icon:'🚐', short:'Газель', v:[
+  {icon:'🚐', short:'Газель', load:[9,14], v:[
     'Поменять масло в «Газели». Старое ушло само, вместе с прокладкой.',
     'Завести «Газель» в минус 30. Толкать тоже тебе.',
     'Найти, что стучит в «Газели». Стучит всё.',
@@ -831,6 +917,11 @@ const TASKS = [
     'Прикрутить отвалившийся бампер. Синей изолентой, как положено.',
     'Пройти техосмотр на «Газели» и объяснить, почему не горят фары.',
     'Съездить на «Газели» за запчастями для «Газели».',
+    'Отмыть «Газель» к приезду начальства. Воды нет.',
+    'Найти, откуда в «Газели» пахнет бензином. Отовсюду.',
+    'Поменять лампочку в фаре «Газели». Фару держит изолента.',
+    'Настроить магнитолу в «Газели». Ловит только «Шансон».',
+    'Уговорить «Газель» доехать до КС. Словами.',
   ]},
 ];
 const BOSS_START = [
@@ -856,10 +947,74 @@ const LEXA = [
   'Я связист, а не волшебник…','А в инструкции такого нет.','Можно я хотя бы кофе допью?','Это точно мне?',
   'Уже бегу. Мысленно.','Я в отпуске должен быть…','А Петрович что делает?','Задолбали, честное слово.',
   'Я вам не робот. Хотя уже почти.','Может, сразу меня в акт списания?','Заявку в письменном виде, пожалуйста.',
-  'Кофе, дай мне сил…','Вы издеваетесь? Вы издеваетесь.'];
+  'Кофе, дай мне сил…','Вы издеваетесь? Вы издеваетесь.','Вы меня с кем-то путаете. С роботом.',
+  'Я на это не подписывался. А, подписывался…','Ладно. Но я запомню.','Так, где моя «Газель»…',
+  'Саныч, ну ты серьёзно?','Саныч, я тебя уважаю, но…','Саныч, а давай ты сам? Нет? Понял.'];
 const LEXA_FRESH = ['Легко! Сделаем! …Наверное.','Кофе есть — жить можно. Пока.','Уже бегу! Медленно.','Раз плюнуть. Но плевать буду долго.','Для любимого начальника — хоть на мачту. Шутка.'];
 const LEXA_WRECK = ['Я… не… чувствую… ног…','На трассе меня покусала собака. Или я её.','Я уже часть кабеля…',
   'Штаны дырявые, зато душа… тоже.','Пятая кружка кофе не помогает…','Как же вы меня задолбали… все… до одного…','Позовите Петровича…'];
+const LEXA_DYING = ['Всё… как же вы меня… задолбали… батарейка… села…','Передайте «Газели»… что я её любил…',
+  'Спишите меня… по акту… синей ручкой…','Кофе… кончился… и я тоже…','Позовите… Петровича… пусть он…'];
+const BOSS_BURN = ['Ой… кажется, я тупанул. Лёха разрядился! В студии — СУПЕРИГРА!',
+  'Грустненько… Лёха выключился. Нужно сесть обсудить… СУПЕРИГРУ!','Надо всем помогать! Особенно Лёхе. СУПЕРИГРА!'];
+/* Почему Лёха воскресает */
+const REVIVE = [
+  {boss:'Алексей, в столовой дают бесплатный кофе!', lexa:'КОФЕ?! Я жив!'},
+  {boss:'Подключаем Алексея к ИБП… Зарядка пошла!', lexa:'Бип… бип… 100%… ой, уже 15%…'},
+  {boss:'Алексей… ПРЕМИЯ!', lexa:'Где?! Кто сказал «премия»?!'},
+  {boss:'Алексей, «Газель» завелась сама!', lexa:'Не может быть! Надо это видеть!'},
+  {boss:'Алексей, пятница, 17:00!', lexa:'Пятница?! Я встаю!'},
+  {boss:'Петрович нашёл ключ от серверной!', lexa:'Не верю! Покажите!'},
+  {boss:'Внимание! В бухгалтерии дают аванс!', lexa:'Аванс! Ноги, несите!'},
+  {boss:'Алексей, мы нашли тебе напарника!', lexa:'Правда?! …А, это стажёр. Всё равно встаю.'},
+];
+/* Суперпризы */
+const PRIZES = [
+  {icon:'🏖️', title:'ОТПУСК 14 ДНЕЙ', text:'ушёл в отпуск на 14 дней', lexa:'УРА-А-А! ОТПУСК!!!'},
+  {icon:'🛌', title:'ОТГУЛ НА ДЕНЬ', text:'получил отгул на целый день', lexa:'Целый день! Буду спать 24 часа!'},
+  {icon:'🧖', title:'ПУТЁВКА В САНАТОРИЙ', text:'уехал в санаторий по путёвке профкома', lexa:'Грязевые ванны! Как на трассе, только бесплатно!'},
+  {icon:'🎂', title:'ГРАМОТА И ТОРТ', text:'получил почётную грамоту и торт', lexa:'Торт! А грамоту можно съесть?'},
+  {icon:'🎣', title:'РЫБАЛКА НА ВЫХОДНЫЕ', text:'уехал на рыбалку на все выходные', lexa:'Удочка, тишина и никаких раций!'},
+  {icon:'☕', title:'ГОДОВОЙ ЗАПАС КОФЕ', text:'получил годовой запас кофе и ушёл его пить', lexa:'Лучший день в моей жизни!'},
+];
+/* Кто и зачем выдёргивает Лёху обратно */
+const RECALLS = [
+  {from:'ГРС', call:'«Алло! У нас телефон не звонит!»', end:'Отдых Лёхи переносится на следующий квартал.'},
+  {from:'Директор', call:'«Алексей, у меня пропал пасьянс «Паук»!»', end:'Отдых прерван. Пасьянс важнее.'},
+  {from:'Бухгалтерия', call:'«Принтер зажевал зарплатную ведомость!»', end:'Лёха вернулся спасать зарплату. Свою тоже.'},
+  {from:'Гараж', call:'«Газель не заводится! Опять!»', end:'Лёха уже толкает «Газель». В тапочках.'},
+  {from:'Охрана', call:'«Камеры показывают только небо и голубя!»', end:'Отдых отменяется. Голубь победил.'},
+  {from:'Петрович', call:'«Лёха, я опять потерял ключ от серверной…»', end:'Лёха вернулся. Петрович неисправим.'},
+  {from:'Охрана труда', call:'«Алексей не расписался в журнале в восьмой раз!»', end:'Лёху вызвали расписаться. Отдых — потом.'},
+  {from:'Головной офис', call:'«Срочно нужна справка, которую может сделать только Алексей!»', end:'Справка на 2 страницы. Отдых — на 0 дней.'},
+  {from:'КС', call:'«У нас рация ловит такси! Нам нравится, но почините.»', end:'Лёха едет на КС. Такси не вызывал.'},
+];
+const LEXA_BACK = ['Я вернулся… Как вы меня задолбали.','Отдохнул. Целых 5 минут.','Я даже кофе не допил…','Ну что, кого чинить?'];
+/* Саныч комментирует задание своего сектора */
+const BOSS_BY = {
+  'Кабель':['Алексей, кабель — это нервы нашей службы!','Триста метров — это рядом. По карте.'],
+  'Мачта':['Алексей, наверху свежий воздух! Считай, отпуск.','Мачта высокая, но и ты у нас не низкий.'],
+  'АТС':['Алексей, АТС — сердце службы. Не остановите сердце.','Там всего-то перезагрузить… и не сломать.'],
+  'Поиск':['Алексей, найти — это полдела. Вторая половина — тоже найти.','Я бы сам поискал, но у меня совещание.'],
+  'Выезд':['Алексей, дорога — это романтика!','Машину дадим. Наверное. Бензин — точно нет.'],
+  'ИБП':['Алексей, аккумуляторы — это спорт!','Тридцать кило — это же как гантели. Бесплатный фитнес!'],
+  'Акты':['Алексей, акты — лицо нашей службы!','Без бумажки ты, Алексей, электромонтёр без бумажки.'],
+  'Маркировка':['Алексей, порядок начинается с бирки!','Красиво подпишешь — комиссия заплачет от счастья.'],
+  'Рации':['Алексей, связь — это наше всё!','Рации — это просто. Нажал и говоришь. И так 30 раз.'],
+  'Принтер':['Алексей, надо всем помогать. Даже бухгалтерии.','Принтер — тоже связь. Бумажная.'],
+  'Инструктаж':['Алексей, безопасность превыше всего!','Инструктаж — это отдых. Сидишь, слушаешь…'],
+  'Дежурство':['Алексей, ночь — лучшее время для связи!','Дежурство — это доверие. Мы тебе доверяем. Ночью.'],
+  'Кросс':['Алексей, в кроссе всё просто. Было. Когда-то.','Пары сами себя не прозвонят!'],
+  'Кладовка':['Алексей, в кладовке история нашей службы!','Ничего не выкидывай, это наш музей.'],
+  'Камеры':['Алексей, камеры — глаза нашей службы!','Голуби — это не повод, Алексей.'],
+  'Юзеры':['Алексей, надо всем помогать!','Ты же у нас IT-специалист. По совместительству. Бесплатно.'],
+  'Газель':['Алексей, «Газель» — наш боевой конь!','Кто, если не ты, заведёт нашу ласточку?'],
+};
+/* Лёха уходит выполнять и бурчит на ходу */
+const LEXA_LEAVE = ['Пошёл. Не ждите скоро.','Если что — я в «Газели».','Иду… Как вы меня все задолбали…',
+  'Вернусь — расскажу. Если вернусь.','Кофе беру с собой. Не трогать.','Ладно, пошёл. Но я всё записал.',
+  'Если позвонит Петрович — меня нет.','Пошёл. Про премию не забудьте.','Саныч, я тебе это припомню.',
+  'Всё, ушёл. Совещание без меня.','Пошёл творить чудеса за оклад.'];
 const TIRED = [[0,'Бодр и свеж (подозрительно)'],[20,'Слегка помят'],[40,'Пьёт третью кружку кофе'],[60,'Спит с открытыми глазами'],[80,'Мечтает об отпуске'],[95,'Просит отгул. Не дают.'],[100,'Разряжен в ноль']];
 /* Реплики Лёхи под конкретный сектор (смешиваются с общими) */
 const LEXA_BY = {
@@ -961,13 +1116,16 @@ function sigh(){ if(!ac) return; const t=ac.currentTime,o=ac.createOscillator(),
 
 /* ---------- пузыри ---------- */
 const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const readTime = t => Math.max(3200, 1600 + t.length * 60); // сколько держать реплику, чтобы успеть прочитать
 const timers = {};
-function say(who, text, ms=2600){
+function say(who, text, ms){
+  ms = ms || readTime(text);
   const el = $(who + 'Bubble'); el.textContent = text; el.classList.add('show');
   if (who === 'boss') $('boss').classList.add('talking');
   clearTimeout(timers[who]); clearTimeout(timers[who+'m']);
-  timers[who+'m'] = setTimeout(()=> $('boss').classList.remove('talking'), Math.min(ms, 1400));
-  timers[who] = setTimeout(()=> el.classList.remove('show'), ms);
+  if (who === 'boss') timers[who+'m'] = setTimeout(() => $('boss').classList.remove('talking'), Math.min(ms, 1800));
+  timers[who] = setTimeout(() => el.classList.remove('show'), ms);
 }
 
 /* ---------- Лёха: вид и походка зависят от усталости ---------- */
@@ -998,14 +1156,11 @@ function lexaOut(){
   slot.classList.remove('in','idle','jump'); slot.classList.add('out');
   $('lexaBubble').classList.remove('show');
 }
-function lexaIn(){
+async function lexaIn(){ // завершается, когда Лёха дошёл до места
   applyLevel();
   slot.classList.remove('out','idle','jump'); void slot.offsetWidth; slot.classList.add('in');
-  setTimeout(() => {
-    slot.classList.add('idle'); sigh();
-    if (tired >= 100) return burnout();
-    say('lexa', lexaLine || pick(LEXA), 4200);
-  }, LEVELS[level].walk * 1000);
+  await sleep(LEVELS[level].walk * 1000);
+  slot.classList.add('idle'); sigh();
 }
 
 /* ---------- усталость и журнал ---------- */
@@ -1015,51 +1170,42 @@ function renderTired(){
   $('tiredText').textContent = TIRED.filter(t => tired >= t[0]).pop()[1];
 }
 function addTired(task, text){
-  tired = Math.min(100, tired + 6 + Math.floor(Math.random()*9));
+  const [a, b] = task.load, inc = a + Math.floor(Math.random()*(b - a + 1));
+  tired = Math.min(100, tired + inc);
   renderTired();
   const li = document.createElement('li'); li.textContent = task.icon + ' ' + text;
   $('log').prepend(li); count++;
+  return inc;
 }
 
-/* ---------- кручение ---------- */
-let rot = 0, spinning = false, lastIdx = -1, prevTask = null, burned = false;
-function spin(){
-  if (spinning || burned) return;
-  spinning = true; audio();
-  $('spinBtn').disabled = true;
-  $('wheelWrap').classList.add('spinning');
-  $('boss').classList.add('pointing');
-  say('boss', pick(BOSS_START), 2200);
-  // Лёха отчитывается о прошлом задании и уходит
-  if (prevTask && slot.classList.contains('in')) {
-    say('lexa', pick(LEXA_DONE[prevTask.short] || LEXA), 1700);
-    setTimeout(lexaOut, 1500);
-  } else lexaOut();
-  $('sectors').classList.remove('picked');
-  document.querySelectorAll('#sectors .win').forEach(e => e.classList.remove('win'));
-  $('badge').classList.remove('show');
-  $('plaqueLabel').textContent = 'БАРАБАН КРУТИТСЯ…';
-  $('taskText').textContent = '• • •';
+/* ---------- кнопка ---------- */
+const btn = $('spinBtn');
+function setBtn(text, enabled, superMode){
+  btn.textContent = text; btn.disabled = !enabled; btn.classList.toggle('super', !!superMode);
+}
 
-  let idx; do { idx = Math.floor(Math.random()*N); } while (idx === lastIdx);
-  lastIdx = idx;
-  const within = A * (0.32 + Math.random()*0.36); // ближе к центру сектора — чтобы было однозначно видно
-  const targetMod = (360 - (idx*A + within)) % 360;
-  let delta = targetMod - ((rot % 360) + 360) % 360; if (delta < 0) delta += 360;
-  delta += 360 * (4 + Math.floor(Math.random()*2));
-
-  const start = rot, dur = 2300 + Math.random()*700, t0 = performance.now();
-  let lastSec = Math.floor(start / A);
-  function frame(now){
-    const t = Math.min(1, (now - t0) / dur);
-    const e = 1 - Math.pow(1 - t, 3.4);
-    rot = start + delta * e;
-    rotor.setAttribute('transform', `rotate(${rot})`);
-    const s = Math.floor(rot / A);
-    if (s !== lastSec) { lastSec = s; tick(); pointer.classList.remove('flick'); void pointer.getBBox(); pointer.classList.add('flick'); }
-    if (t < 1) requestAnimationFrame(frame); else finish(idx);
-  }
-  requestAnimationFrame(frame);
+/* ---------- барабан ---------- */
+let rot = 0, busy = false, lastIdx = -1, prevTask = null, burned = false;
+function spinWheel(){
+  return new Promise(resolve => {
+    let idx; do { idx = Math.floor(Math.random()*N); } while (idx === lastIdx);
+    lastIdx = idx;
+    const within = A * (0.32 + Math.random()*0.36); // ближе к центру сектора — чтобы было однозначно видно
+    const targetMod = (360 - (idx*A + within)) % 360;
+    let delta = targetMod - ((rot % 360) + 360) % 360; if (delta < 0) delta += 360;
+    delta += 360 * (4 + Math.floor(Math.random()*2));
+    const start = rot, dur = 2300 + Math.random()*700, t0 = performance.now();
+    let lastSec = Math.floor(start / A);
+    function frame(now){
+      const t = Math.min(1, (now - t0) / dur);
+      rot = start + delta * (1 - Math.pow(1 - t, 3.4));
+      rotor.setAttribute('transform', `rotate(${rot})`);
+      const s = Math.floor(rot / A);
+      if (s !== lastSec) { lastSec = s; tick(); pointer.classList.remove('flick'); void pointer.getBBox(); pointer.classList.add('flick'); }
+      if (t < 1) requestAnimationFrame(frame); else resolve(idx);
+    }
+    requestAnimationFrame(frame);
+  });
 }
 
 function typeText(el, text){
@@ -1068,39 +1214,74 @@ function typeText(el, text){
   step();
 }
 
-function finish(idx){
+/* Один ход — диалог идёт строго по очереди, каждая реплика висит, пока её можно прочитать:
+   крутим барабан (Лёха выходит и отчитывается о прошлом задании) → задание → Саныч комментирует →
+   Лёха огрызается → Лёха бурчит на ходу и уходит → можно крутить снова */
+async function turn(){
+  if (busy || burned) return;
+  busy = true; audio();
+  setBtn('БАРАБАН КРУТИТСЯ…', false);
+  $('sectors').classList.remove('picked');
+  document.querySelectorAll('#sectors .win').forEach(e => e.classList.remove('win'));
+  $('badge').classList.remove('show');
+  $('plaqueLabel').textContent = 'БАРАБАН КРУТИТСЯ…';
+  $('taskText').textContent = '• • •';
+  $('wheelWrap').classList.add('spinning');
+  $('boss').classList.add('pointing');
+
+  // Лёха выходит на сцену, пока крутится барабан; со второго хода — докладывает о прошлом задании
+  const report = prevTask ? pick(LEXA_DONE[prevTask.short] || LEXA) : '';
+  if (!report) say('boss', pick(BOSS_START));
+  const lexaReady = (async () => {
+    if (!slot.classList.contains('in')) await lexaIn();
+    if (report) { say('lexa', report); await sleep(readTime(report)); }
+  })();
+
+  const idx = await spinWheel();
   const task = TASKS[idx], text = nextVariant(idx);
   prevTask = task;
   $('wheelWrap').classList.remove('spinning');
   fanfare();
-  const col = COLORS[idx % COLORS.length];
   document.querySelectorAll(`#sectors [data-i="${idx}"]`).forEach(e => e.classList.add('win'));
   $('sectors').classList.add('picked');
   const badge = $('badge');
-  badge.style.setProperty('--sec', col);
+  badge.style.setProperty('--sec', COLORS[idx % COLORS.length]);
   badge.innerHTML = `<small>СЕКТОР</small>${task.icon} ${task.short.toUpperCase()}`;
   badge.classList.add('show');
+  const inc = addTired(task, text);
   const pl = $('plaque'); pl.classList.remove('reveal'); void pl.offsetWidth; pl.classList.add('reveal');
-  $('plaqueLabel').textContent = `ЗАДАНИЕ №${count + 1}`;
+  $('plaqueLabel').textContent = `ЗАДАНИЕ №${count} · +${inc}% УСТАЛОСТИ`;
   typeText($('taskText'), text);
-  addTired(task, text);
-  applyLevel();
   $('lexaProp').textContent = task.icon;
   lexa.classList.add('has-prop');
-  lexaLine = chooseLexaLine(task);
-  const bossPool = tired >= 60 && Math.random() < .5 ? BOSS_TIRED : BOSS_RESULT;
-  say('boss', pick(bossPool).replace('{s}', task.short), 2600);
-  setTimeout(() => $('boss').classList.remove('pointing'), 900);
-  setTimeout(lexaIn, 500);
-  setTimeout(() => { if (tired >= 100) return; spinning = false; $('spinBtn').disabled = false; }, 2300);
+  setBtn('ИДЁТ РАЗГОВОР…', false);
+
+  await lexaReady;
+  await sleep(500);
+  // 1. Саныч комментирует задание
+  const pool = tired >= 60 && Math.random() < .35 ? BOSS_TIRED
+             : Math.random() < .65 && BOSS_BY[task.short] ? BOSS_BY[task.short] : BOSS_RESULT;
+  const bossLine = pick(pool).replace('{s}', task.short);
+  say('boss', bossLine); await sleep(readTime(bossLine));
+  $('boss').classList.remove('pointing');
+  if (tired >= 100) { applyLevel(); await burnout(); busy = false; return; }
+  // 2. Лёха огрызается
+  const answer = chooseLexaLine(task);
+  say('lexa', answer); await sleep(readTime(answer));
+  // 3. бурчит на ходу и уходит (вид меняется по усталости к следующему выходу)
+  const leave = pick(LEXA_LEAVE);
+  say('lexa', leave); await sleep(readTime(leave));
+  lexaOut(); await sleep(600);
+  busy = false;
+  setBtn('КРУТИТЬ БАРАБАН!', true);
 }
 
-/* ---------- 100%: Лёха разрядился → суперприз → звонок с ГРС ---------- */
+/* ---------- 100%: Лёха разрядился → воскрес → суперприз → его выдёргивают обратно ---------- */
 function powerDown(){ if(!ac) return; const t=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();
   o.type='sawtooth'; o.frequency.setValueAtTime(600,t); o.frequency.exponentialRampToValueAtTime(40,t+1.2);
   g.gain.setValueAtTime(.08,t); g.gain.exponentialRampToValueAtTime(.0001,t+1.3);
   o.connect(g).connect(ac.destination); o.start(t); o.stop(t+1.35); }
-function ring(){ for (let k = 0; k < 3; k++) for (let i = 0; i < 8; i++) tone(i % 2 ? 1300 : 1000, .05, 'square', .05, 2.2 + k*.9 + i*.05); }
+function ring(){ for (let k = 0; k < 3; k++) for (let i = 0; i < 8; i++) tone(i % 2 ? 1300 : 1000, .05, 'square', .05, 2.6 + k*.9 + i*.05); }
 function confetti(){
   const cols = ['#ffd24a','#e63946','#1d7fd8','#2a9d5c','#8e44ad','#f77f00','#fff'];
   for (let i = 0; i < 90; i++) {
@@ -1110,50 +1291,69 @@ function confetti(){
     document.body.appendChild(c); setTimeout(() => c.remove(), 5200);
   }
 }
-function burnout(){
+async function burnout(){
   burned = true;
-  say('lexa', 'Всё… как же вы меня… задолбали… батарейка… села…', 2600);
-  setTimeout(() => {
-    slot.classList.add('collapsed'); powerDown();
-    say('boss', 'Ой… кажется, я тупанул. Лёха разрядился! В студии — СУПЕРИГРА!', 4000);
-    const b = $('spinBtn'); b.textContent = '🎁 СУПЕРПРИЗ!'; b.classList.add('super'); b.disabled = false;
-  }, 2400);
+  setBtn('ЛЁХА НА ИСХОДЕ…', false);
+  const last = pick(LEXA_DYING);
+  say('lexa', last); await sleep(readTime(last));
+  slot.classList.add('collapsed'); powerDown();
+  await sleep(900);
+  say('boss', pick(BOSS_BURN));
+  await sleep(1500);
+  setBtn('🎁 СУПЕРПРИЗ!', true, true);
 }
-function superPrize(){
-  const b = $('spinBtn'); if (b.disabled) return; b.disabled = true;
-  fanfare(); confetti();
-  slot.classList.remove('collapsed'); lexa.classList.add('vacation');
-  say('boss', 'Алексей! Ваш суперприз — ОТПУСК на 14 дней!', 3000);
-  setTimeout(() => say('lexa', 'УРА-А-А! ОТПУСК!!!', 2000), 800);
-  setTimeout(() => { slot.classList.remove('idle'); slot.classList.add('jump'); }, 1200);
-  setTimeout(() => { slot.classList.remove('in','jump'); $('mCount').textContent = count; $('modal').classList.add('show'); ring(); }, 3200);
+async function superPrize(){
+  if (busy) return; busy = true;
+  setBtn('🎁 СУПЕРПРИЗ…', false, true);
+  const rev = pick(REVIVE), prize = pick(PRIZES), call = pick(RECALLS);
+  say('boss', rev.boss); await sleep(readTime(rev.boss) - 600);
+  slot.classList.remove('collapsed');
+  say('lexa', rev.lexa); await sleep(readTime(rev.lexa));
+  fanfare(); confetti(); lexa.classList.add('vacation');
+  const pb = `Алексей! Ваш суперприз — ${prize.title.toLowerCase()}!`;
+  say('boss', pb); await sleep(1400);
+  say('lexa', prize.lexa); await sleep(readTime(prize.lexa));
+  slot.classList.remove('idle'); slot.classList.add('jump');
+  await sleep(1900);
+  slot.classList.remove('in','jump');
+  $('mTitle').textContent = `${prize.icon} ${prize.title}!`;
+  $('mText').innerHTML = `Лёха выполнил <b>${count}</b> заданий и ${prize.text}.`;
+  $('mFrom').textContent = call.from;
+  $('mCall').textContent = call.call;
+  $('mEnd').textContent = call.end;
+  $('modal').classList.add('show'); ring();
 }
-function newShift(){
+async function newShift(){
   $('modal').classList.remove('show');
   burned = false; tired = 0; count = 0; prevTask = null; $('log').innerHTML = ''; renderTired();
   lexa.classList.remove('vacation','has-prop');
-  const b = $('spinBtn'); b.textContent = 'КРУТИТЬ БАРАБАН!'; b.classList.remove('super'); b.disabled = false; spinning = false;
   $('sectors').classList.remove('picked'); $('badge').classList.remove('show');
   $('plaqueLabel').textContent = 'НОВАЯ СМЕНА';
-  $('taskText').textContent = 'Лёха вернулся из отпуска. Через 5 минут. Крутите барабан!';
-  lexaLine = 'Я отдохнул! Целых 5 минут… Как вы меня задолбали.';
-  lexaIn();
-  say('boss', 'Нужно сесть обсудить… а, нет, работаем! Алексей, с возвращением!', 3500);
+  $('taskText').textContent = 'Лёха вернулся. Крутите барабан!';
+  setBtn('ЛЁХА ВОЗВРАЩАЕТСЯ…', false);
+  const bl = 'Нужно сесть обсудить… а, нет, работаем! Алексей, с возвращением!';
+  say('boss', bl);
+  await sleep(1200);
+  await lexaIn();
+  const back = pick(LEXA_BACK);
+  say('lexa', back); await sleep(readTime(back));
+  busy = false;
+  setBtn('КРУТИТЬ БАРАБАН!', true);
 }
 
-function onButton(){ burned ? superPrize() : spin(); }
-$('spinBtn').addEventListener('click', onButton);
+function onButton(){ burned ? superPrize() : turn(); }
+btn.addEventListener('click', onButton);
 $('newShift').addEventListener('click', newShift);
 document.addEventListener('keydown', e => {
   if ($('modal').classList.contains('show')) return;
-  if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) { e.preventDefault(); if (!$('spinBtn').disabled) onButton(); }
+  if ((e.code === 'Space' || e.code === 'Enter') && !e.repeat) { e.preventDefault(); if (!btn.disabled) onButton(); }
 });
 // начальник иногда что-нибудь говорит сам по себе
 setInterval(() => {
-  if (!spinning && !burned && !$('bossBubble').classList.contains('show') && Math.random() < .6) say('boss', pick(BOSS_IDLE), 2600);
-}, 9000);
+  if (!busy && !burned && !$('bossBubble').classList.contains('show') && Math.random() < .4) say('boss', pick(BOSS_IDLE));
+}, 20000);
 applyLevel();
-setTimeout(() => say('boss', 'Добрый день! В студии служба связи. Крутите барабан!', 3500), 600);
+setTimeout(() => { if (!busy) say('boss', 'Добрый день! В студии служба связи. Крутите барабан!'); }, 600);
 </script>
 </body>
 </html>
